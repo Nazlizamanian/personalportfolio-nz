@@ -1,0 +1,59 @@
+<div id="main">
+   {{#if isAdmin}}
+          <div>
+            <a href="/projects/new" class="btn btn-link">New Project</a>
+            <a href="/projects/update" class="btn btn-link">Modify Project</a>
+            <a href="/projects/modify" id="delete" >Delete Project</a>
+          </div>
+          {{/if}}
+          <div class="columns col-gapless">
+            {{#if dbError}}
+            <div>
+              Problem with the database<br />
+              {{theError}}
+            </div>
+            {{else}}
+              {{#each projects}}
+              <div>
+                <div class="card">
+                  <div class="card-image">
+                    <img src="{{pimgURl}}" alt="{{pimgURL}}">
+                  </div>
+                  <div class="card-header">
+                    <div class="card-title h3>{{pname}}"></div>
+                    <div class="card-subtitle text-gray">{{pyear}} ---{{ptype}}</div>
+                  </div>
+                  <div class="card-fotter">
+                    {{#if ../isAdmin}}
+                    <div>
+                      <a href="/projects/update/{{pid}}">Modify</a> - <a href="/projects/delete{{pid}}" class="important">Delete</a>
+                    </div>
+                    {{/if}}
+                  </div>
+                </div>
+              </div>
+              {{/each}}
+              {{/if}}
+          </div>
+  <section class="parallax-container parallax-container2">
+        <div class="card">
+          <div class="card-img"></div>
+          <h3>Online Web Shop SQL</h3>
+          <p>
+            Online Web Shop created with SQL queries and ER diagram with 
+            both conceptual and logical diagram that has been
+            normalized to 3NF.
+          </p>
+         <a href="/onlinewebshop">Learn more</a>
+        </div>
+        <div class="card">
+          <div class="card-img"></div>
+          <h3>Bank system</h3>
+          <p>
+            Simple bank programme that resemblance the nature and primary functions of an atm machine 
+            and fullfils the tasks that one can expect to be done at a visit to the bank.
+          </p>
+          <a href="/banksystem">Learn more</a>
+        </div>
+      </section>
+</div>

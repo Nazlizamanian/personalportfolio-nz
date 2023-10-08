@@ -1,0 +1,28 @@
+{
+  "name": "personal-portfolio",
+  "version": "1.0.0",
+  "description": "My personal portfolio website.",
+  "main": "server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node server.js"
+  },
+  "keywords": [
+    "Portfolio",
+    "projects",
+    "Nazli Zamanian Gustavsson"
+  ],
+  "author": "Nazli Zamanian Gustavsson ",
+  "license": "ISC",
+  "dependencies": {
+    "bcrypt": "^5.1.1",
+    "body-parser": "^1.20.2",
+    "connect-sqlite3": "^0.9.13",
+    "express": "^4.18.2",
+    "express-handlebars": "^7.1.2",
+    "express-session": "^1.17.3",
+    "handlebars": "^4.7.8",
+    "nodemon": "^3.0.1",
+    "sqlite3": "^5.1.6"
+  }
+}

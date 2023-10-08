@@ -1,0 +1,56 @@
+<div id="main">
+     {{#if isAdmin}}
+          <div>
+            <a href="/projects/update" class="btn btn-link">New Project</a>
+          </div>
+    <div>
+        <h1>Modify Project</h1>
+    </div>
+    {{#if isLoggedIn}}
+    {{#if isAdmin}}
+    <form action="/projects/update{{projects.projectID}}" method="post">
+    <fieldset>
+         <label for="projectTitle"> Project Title:</label>
+         <input type="text" name="projectTitle" id="projectTitle" required="required">
+         <br />
+         <label for="projectDescription"> Project Description:</label>
+         <input type="text" name="projectDescription" id="projectDescription" required="required">
+         <br />
+         <label for="link"> Project Link:</label>
+         <input type="text" name="link" id="link" required="required">
+         
+                
+    </fieldset>
+    <button type="submit" value="Add project">Add</button>
+    </form>
+</div>
+
+
+
+<!--
+    <div id="main">
+     {{#if isAdmin}}
+          <div>
+            <a href="/projects/modify" class="btn btn-link">New Project</a>
+          </div>
+    <div>
+        <h1>Modify Project</h1>
+    </div>
+    {{#if isLoggedIn}}
+    {{#if isAdmin}}
+    <form action="/projects/update{{projects.projectID}}" method="post">
+    <fieldset>
+         <label for="projectTitle"> Project Title:</label>
+         <input type="text" name="projectTitle" id="projectTitle" required="required">
+         <br />
+         <label for="projectDescription"> Project Description:</label>
+         <input type="text" name="projectDescription" id="projectDescription" required="required">
+         <br />
+         <label for="link"> Project Link:</label>
+         <input type="text" name="link" id="link" required="required">
+         
+                
+    </fieldset>
+    <button type="submit" value="Add project">Add</button>
+    </form>
+</div>

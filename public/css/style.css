@@ -1,0 +1,539 @@
+:root {
+  --color: pink;
+
+}
+
+body {
+  font-family: Verdana;
+  background-color: pink;
+  color: black;
+}
+
+h1 {
+  font-size: 3rem;
+  font-weight: 700;
+
+}
+
+h2 {
+  font-size: 50px;
+  font-family: Brush Script MT;
+  font-style: italic;
+}
+
+h3 {
+  font-size: 40px;
+  font-family: Verdana;
+  padding-top: 20vh;
+}
+
+li,
+p {
+  line-height: 1.8em;
+  max-width: 52ch;
+  padding: 1em;
+}
+
+a:hover {
+  color: black;
+}
+
+.container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 20px;
+}
+
+
+.header {
+  position: relative;
+  text-align: center;
+}
+
+
+/* Header styles */
+header {
+  background-color: rgb(255, 192, 203);
+  color: #fff;
+  padding: 10px;
+  text-align: center;
+}
+
+
+/* Navigation styles */
+nav {
+  margin-bottom: 10px;
+  text-align: center;
+}
+
+nav ul {
+  list-style: none;
+  margin-bottom: 10px;
+  margin-top: -20px;
+}
+
+nav ul li {
+  display: inline;
+  margin: 0 15px;
+}
+
+nav ul li a {
+  text-decoration: none;
+  color: #fff;
+  font-weight: bold;
+  transition: color 0.3s;
+  margin-bottom: 10px;
+  background-color: rgb(255, 192, 203);
+  box-shadow: 20px 20px 20px rgba(0, 0, 0, 0.2);
+}
+
+nav ul li a:hover {
+  color: black;
+}
+
+/*Login */
+.form-page {
+  background-image: url('../img/pastel.jpg');
+}
+
+.login-container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  background-color: #fff;
+  border-radius: 3%;
+  box-shadow: 0 14px 28px rgba(0, 0, 0, 0.25),
+    0 10px 10px rgba(0, 0, 0, 0.22);
+  position: relative;
+  overflow: hidden;
+  width: 768px;
+  max-width: 100%;
+  min-height: 600px;
+  left: 20%;
+}
+
+.login-container h3 {
+  margin-bottom: 10px;
+  padding-top: 30px;
+}
+
+a {
+  color: #333;
+  font-size: 14px;
+  text-decoration: none;
+  margin: 15px 0;
+}
+
+button {
+  border-radius: 20px;
+  border: 1px solid pink;
+  background-color: pink;
+  color: #FFFFFF;
+  font-size: 12px;
+  font-weight: bold;
+  padding: 12px 45px;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+}
+
+button:hover {
+  color: black;
+}
+#delete:hover{
+  color: red;
+}
+
+form {
+  background-color: #FFFFFF;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  padding: 0 50px;
+  height: 100%;
+  text-align: center;
+}
+
+input {
+  background-color: #eee;
+  border: none;
+  padding: 12px 15px;
+  margin: 8px 0;
+  width: 100%;
+  text-align: center;
+}
+
+.form-container {
+  position: relative;
+  top: 10%;
+  left: 50%;
+  height: auto;
+}
+
+.sign-in-container {
+  left: 0;
+  width: 50%;
+  z-index: 2;
+}
+.input-box{
+  width:270px;
+}
+
+/* Section styles */
+.section {
+  padding: 10px;
+  margin: 10px;
+  border-radius: 5px;
+}
+
+.section h2 {
+  font-size: 24px;
+  margin-bottom: 10px;
+}
+
+/* Flexbox grid styles */
+.grid {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+}
+
+.grid-item {
+  flex: 1;
+  margin: 10px;
+  padding: 10px;
+  box-shadow: 0 0 5px rgba(0, 0, 0, 0.2);
+  border-radius: 5px;
+}
+
+.parallax-container {
+  display: flex;
+  min-height: 80vh;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  background-attachment: fixed;
+  background-image: url('/img/pinkbomb.jpg');
+  background-position: center;
+  background-size: cover;
+  color: var(--color);
+  row-gap: 2rem;
+  text-align: center;
+}
+
+.parallax-container h1,
+h2 {
+  color: black;
+}
+
+.buffer {
+  width: 100%;
+  min-height: 50vh;
+  background-color: var(--color);
+  justify-content: center;
+  align-items: center;
+}
+
+.about {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  background-color: pink;
+}
+
+.buffer #about-me h3 {
+  margin-bottom: 10px;
+}
+
+#education {
+  text-align: center;
+}
+
+#experience {
+  width: 100%;
+
+}
+
+.parallax-container2 {
+  flex-direction: row;
+  flex-wrap: wrap;
+  padding: 2rem;
+  background-image: url('/img/pastel.jpg');
+  gap: 2em;
+}
+
+.parallax-container2 .portfolio {
+  text-align: center;
+  color: black;
+  flex-direction: column;
+  order: 1;
+}
+
+a {
+  display: inline-block;
+  padding: 1em 3.5em;
+  border-radius: 0.3em;
+  background-color: var(--color);
+  color: white;
+  font-size: 0.875rem;
+  font-weight: 700;
+  letter-spacing: 0.5px;
+  text-decoration: none;
+  text-transform: uppercase;
+  box-shadow: 20px 20px 20px rgba(0, 0, 0, 0.2);
+}
+
+
+.card {
+  display: flex;
+  max-width: 320px;
+  flex-direction: column;
+  align-items: center;
+  padding-bottom: 1rem;
+  border-radius: 0.5em;
+  background-color: white;
+  box-shadow: 0 29px 38px -15px rgb(0 0 0 / 43%);
+  order: 2;
+}
+
+/*Project-pages */
+.project-card {
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+
+.project {
+  max-width: 220vw;
+  flex-direction: column;
+  align-items: center;
+  background-color: rgb(255, 192, 203);
+  border-radius: 5%;
+  box-shadow: 20px 20px 20px rgba(0, 0, 0, 0.2);
+  margin: auto;
+  text-align: center;
+}
+
+.project-card .project p {
+  text-align: center;
+}
+
+.card-img {
+  width: 100%;
+  height: 200px;
+  border-radius: 0.3em;
+  background-position: center;
+  background-size: cover;
+}
+
+.card-img h3 {
+  padding: 2px;
+}
+
+.card:nth-of-type(1) .card-img {
+  background-image: url('/img/onlineweb.jpg');
+}
+
+.card:nth-of-type(2) .card-img {
+  background-image: url('/img/bankpicture.jpg');
+  /*Source website: https://www.vectorstock.com/royalty-free-vector/icons-for-the-banking-system-vector-20983306*/
+}
+
+.parallax-container2 .card h3 {
+  padding: 2px;
+}
+
+
+/*Skills circle*/
+.wrapper {
+  width: 1000px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 20px;
+}
+
+.wrapper .card {
+  background: rgb(255, 192, 203);
+  width: calc(25% - 20px);
+  height: 50vh;
+  border-radius: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: space-evenly;
+  flex-direction: column;
+  box-shadow: 0px 10px 20px rgba(0, 0, 0, 0.1);
+  margin: 10px;
+}
+
+.wrapper .card .circle {
+  position: relative;
+  height: 150px;
+  width: 150px;
+  border-radius: 50%;
+  cursor: default;
+}
+
+.card .circle .box,
+.card .circle .box span {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+}
+
+.card .circle .box {
+  height: 100%;
+  width: 100%;
+  background: rgb(255, 192, 203);
+  border-radius: 50%;
+  transform: translate(-50%, -50%) scale(0.8);
+  transition: all 0.2s;
+}
+
+.card .circle .box span,
+.wrapper .card .text {
+  background: lightcoral;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.circle .box span {
+  font-size: 38px;
+  font-weight: 600;
+  transform: translate(-45%, -45%);
+  transition: all 0.1s;
+}
+
+.card .text {
+  font-size: 20px;
+  font-weight: 600;
+}
+
+.buffer .about h4 {
+  font-family: Brush Script MT;
+  margin-bottom: 40px;
+  font-size: 40px;
+}
+
+/*Responsivness*/
+@media(max-width: 753px) {
+  .wrapper {
+    max-width: 700px;
+  }
+
+  .wrapper .card {
+    width: calc(50% - 20px);
+    margin-bottom: 20px;
+  }
+}
+
+@media(max-width: 505px) {
+  .wrapper {
+    max-width: 500px;
+  }
+
+  .wrapper .card {
+    width: 100%;
+  }
+}
+
+
+/* Timeline
+    The actual timeline (the vertical ruler) */
+.timeline {
+  position: relative;
+  max-width: 1200vw;
+  margin: 0 auto;
+}
+
+/* The actual timeline (the vertical ruler) */
+.timeline::after {
+  content: '';
+  position: absolute;
+  width: 6px;
+  background-color: white;
+  top: 0;
+  bottom: 0;
+  left: 20%;
+  margin-left: -3px;
+  margin-bottom: 23px;
+  height: 259vh;
+}
+
+#experience .timeline::after {
+  content: '';
+  position: absolute;
+  width: 6px;
+  background-color: white;
+  top: 0;
+  bottom: 0;
+  left: 20%;
+  margin-left: -3px;
+  margin-bottom: 23px;
+  height: 130vh;
+}
+
+/* Container around content */
+.container {
+  padding: 3px 40px;
+  position: relative;
+  background-color: inherit;
+  width: 60%;
+}
+
+/* The circles on the timeline */
+.container::after {
+  content: '';
+  position: absolute;
+  width: 30px;
+  height: 30px;
+  right: -10px;
+  background-color: white;
+  border: 4px solid #fff;
+  top: -2px;
+  border-radius: 50%;
+  box-shadow: 0 0 10px 2px #fff;
+
+}
+
+/* Place the container to the right */
+.right {
+  left: 83px;
+}
+
+/* Add arrows to the right container (pointing left) */
+.right::before {
+  content: " ";
+  height: 0;
+  position: absolute;
+  top: 22px;
+  width: 0;
+  left: 30px;
+  border: medium solid white;
+  border-width: 10px 10px 10px 0;
+  border-color: transparent white transparent transparent;
+}
+
+/* Fix the circle for containers */
+.right::after {
+  left: -60px;
+}
+
+/* The actual content */
+.content {
+  padding: 4px 30px;
+  background-color: white;
+  position: relative;
+  border-radius: 10px;
+}
+
+/* Footer styles */
+footer {
+  background-color: rgb(255, 192, 203);
+  color: #fff;
+  text-align: center;
+  padding: 20px 0;
+}
