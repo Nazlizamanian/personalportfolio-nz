@@ -15,9 +15,8 @@ const port = 8080
 //connected to the database located in the model folder.
 const db = new sqlite3.Database('model/portfolio.db');
 
-/*
 //CREATE Table User and inserting values.
-db.run("CREATE TABLE user (userID INTEGER PRIMARY KEY AUTOINCREMENT, username TEXT NOT NULL, password TEXT NOT NULL, role INTEGER, email TEXT, regDate DATE)", (error) => {
+db.run("CREATE TABLE IF NOT EXISTS user (userID INTEGER PRIMARY KEY AUTOINCREMENT, username TEXT NOT NULL, password TEXT NOT NULL, role INTEGER, email TEXT, regDate DATE)", (error) => {
   if (error) {
       console.log("Error: ", error);
   } else {
@@ -31,7 +30,7 @@ db.run("CREATE TABLE user (userID INTEGER PRIMARY KEY AUTOINCREMENT, username TE
       ];
 
       users.forEach((userData) => {
-          db.run("INSERT INTO user (username, password, role, email, regDate) VALUES (?, ?, ?, ?, ?)", [userData.username, userData.password, userData.role, userData.email, userData.regDate], (error) => {
+          db.run("INSERT OR IGNORE INTO user (username, password, role, email, regDate) VALUES (?, ?, ?, ?, ?)", [userData.username, userData.password, userData.role, userData.email, userData.regDate], (error) => {
               if (error) {
                   console.log("Error: ", error);
               } else {
@@ -43,7 +42,7 @@ db.run("CREATE TABLE user (userID INTEGER PRIMARY KEY AUTOINCREMENT, username TE
 });
 
 //CREATE Table Education and inserting values.
-db.run("CREATE TABLE education (educationID INTEGER PRIMARY KEY AUTOINCREMENT, userID INTEGER REFERENCES user(userID) ON DELETE CASCADE ON UPDATE CASCADE, school TEXT NOT NULL, degree TEXT, degreeDescription TEXT, date DATE)", (error) => {
+db.run("CREATE TABLE IF NOT EXISTS education (educationID INTEGER PRIMARY KEY AUTOINCREMENT, userID INTEGER REFERENCES user(userID) ON DELETE CASCADE ON UPDATE CASCADE, school TEXT NOT NULL, degree TEXT, degreeDescription TEXT, date DATE)", (error) => {
     if (error) {
         console.log("Error: ", error);
     } else {
@@ -57,7 +56,7 @@ db.run("CREATE TABLE education (educationID INTEGER PRIMARY KEY AUTOINCREMENT, u
         ];
 
         education.forEach((eduData) => {
-            db.run("INSERT INTO education (userID, school, degree, degreeDescription, date) VALUES (?, ?, ?, ?, ?)", [eduData.userID, eduData.school, eduData.degree, eduData.degreeDescription, eduData.date], (error) => {
+            db.run("INSERT OR IGNORE INTO education (userID, school, degree, degreeDescription, date) VALUES (?, ?, ?, ?, ?)", [eduData.userID, eduData.school, eduData.degree, eduData.degreeDescription, eduData.date], (error) => {
                 if (error) {
                     console.log("Error: ", error);
                 } else {
@@ -70,7 +69,7 @@ db.run("CREATE TABLE education (educationID INTEGER PRIMARY KEY AUTOINCREMENT, u
 
 
 //CREATE Table Experience and inserting values.
-db.run("CREATE TABLE experience (experienceID INTEGER PRIMARY KEY AUTOINCREMENT, userID INTEGER REFERENCES user(userID) ON DELETE CASCADE ON UPDATE CASCADE, jobTitle TEXT NOT NULL, company TEXT, jobDescription TEXT, date DATE, location TEXT)", (error) => {
+db.run("CREATE TABLE IF NOT EXISTS experience (experienceID INTEGER PRIMARY KEY AUTOINCREMENT, userID INTEGER REFERENCES user(userID) ON DELETE CASCADE ON UPDATE CASCADE, jobTitle TEXT NOT NULL, company TEXT, jobDescription TEXT, date DATE, location TEXT)", (error) => {
   if (error) {
       console.log("Error: ", error);
   } else {
@@ -83,7 +82,7 @@ db.run("CREATE TABLE experience (experienceID INTEGER PRIMARY KEY AUTOINCREMENT,
       ];
 
       experiences.forEach((expData) => {
-          db.run("INSERT INTO experience (userID, jobTitle, compoany, jobDescription, date, location) VALUES (?, ?, ?, ?)", [expData.userID, expData.jobTitle, expData.jobDescription, expData.date, expData.location], (error) => {
+          db.run("INSERT OR IGNORE INTO experience (userID, jobTitle, company, jobDescription, date, location) VALUES (?, ?, ?, ?, ?, ?)", [expData.userID, expData.jobTitle, expData.company, expData.jobDescription, expData.date, expData.location], (error) => {
               if (error) {
                   console.log("Error: ", error);
               } else {
@@ -95,7 +94,7 @@ db.run("CREATE TABLE experience (experienceID INTEGER PRIMARY KEY AUTOINCREMENT,
 }); 
 
 //CREATE Table Projects and inserting values.
-db.run("CREATE TABLE projects(projectID INTEGER PRIMARY KEY AUTOINCREMENT, userID INTEGER REFERENCES user(userID) ON DELETE CASCADE ON UPDATE CASCADE, projectTitle TEXT NOT NULL, projectDescription TEXT, link TEXT)", (error) => {
+db.run("CREATE TABLE IF NOT EXISTS projects(projectID INTEGER PRIMARY KEY AUTOINCREMENT, userID INTEGER REFERENCES user(userID) ON DELETE CASCADE ON UPDATE CASCADE, projectTitle TEXT NOT NULL, projectDescription TEXT, link TEXT)", (error) => {
     if (error) {
         console.log("Error: ", error);
     } else {
@@ -106,7 +105,7 @@ db.run("CREATE TABLE projects(projectID INTEGER PRIMARY KEY AUTOINCREMENT, userI
         ];
 
         projects.forEach((projectData) => {
-            db.run("INSERT INTO projects (userID, projectTitle, projectDescription, link) VALUES (?, ?, ?, ?)", [projectData.userID, projectData.projectTitle, projectData.projectDescription, projectData.link], (error) => {
+            db.run("INSERT OR IGNORE INTO projects (userID, projectTitle, projectDescription, link) VALUES (?, ?, ?, ?)", [projectData.userID, projectData.projectTitle, projectData.projectDescription, projectData.link], (error) => {
                 if (error) {
                     console.log("Error: ", error);
                 } else {
@@ -116,34 +115,33 @@ db.run("CREATE TABLE projects(projectID INTEGER PRIMARY KEY AUTOINCREMENT, userI
         });
     }
 });
-
+/*
 //CREATE Table Skills and inserting values.
-db.run("CREATE TABLE skills (skillsID INTEGER PRIMARY KEY AUTOINCREMENT, userID INTEGER REFERENCES user(userID) ON DELETE CASCADE ON UPDATE CASCADE, name TEXT NOT NULL, type TEXT, skillLevel NUMERIC)", (error) => {
-    if (error) {
-        console.log("Error: ", error);
-    } else {
-        console.log("----> Table experience created!");
-        const experiences = [
-            { "userID":1,"name": "C","type": "programming language", "skillLevel": "75" },
-            { "userID":1,"name": "C++","type": "programming language", "skillLevel": "70" },
-            { "userID":1,"name": "CSS","type": "stylesheet language", "skillLevel": "60" },
-            { "userID":1,"name": "HtML","type": "markup language", "skillLevel": "65" },
-            { "userID":1,"name": "SQL","type": "programming language", "skillLevel": "70" },
-        ];
+db.run("CREATE TABLE IF NOT EXISTS skills (skillsID INTEGER PRIMARY KEY AUTOINCREMENT, userID INTEGER REFERENCES user(userID) ON DELETE CASCADE ON UPDATE CASCADE, sname TEXT NOT NULL, type TEXT, skillLevel NUMERIC)", (error) => {
+  if (error) {
+      console.log("Error: ", error);
+  } else {
+      console.log("----> Table skills created!");
+      const skillsData = [
+          { "userID": 1, "name": "C", "type": "programming language", "skillLevel": 75 },
+          { "userID": 1, "name": "C++", "type": "programming language", "skillLevel": 70 },
+          { "userID": 1, "name": "CSS", "type": "stylesheet language", "skillLevel": 60 },
+          { "userID": 1, "name": "HTML", "type": "markup language", "skillLevel": 65 },
+          { "userID": 1, "name": "SQL", "type": "programming language", "skillLevel": 70 },
+      ];
 
-        experiences.forEach((skillsData) => {
-            db.run("INSERT INTO skills (userID, name, type, skillLevel) VALUES (?, ?, ?, ?)", [skillsData.userID, skillsData.name, skillsData.type, skillsData.skillLevel], (error) => {
-                if (error) {
-                    console.log("Error: ", error);
-                } else {
-                    console.log("Line added into experience table!");
-                }
-            });
-        });
-    }
+      skillsData.forEach((data) => {
+          db.run("INSERT OR IGNORE INTO skills (userID, sname, type, skillLevel) VALUES (?, ?, ?, ?)", [data.userID, data.name, data.type, data.skillLevel], (error) => {
+              if (error) {
+                  console.log("Error: ", error);
+              } else {
+                  console.log("Line added into skills table!");
+              }
+          });
+      });
+  }
 });
 */
-
 
 //GET READ on table Education
 app.get('/education',(req,res)=>{
@@ -379,6 +377,20 @@ app.get('/logout', (req,res)=>{
   res.redirect('/')
 });
 
+db.serialize(function() {
+  // Test the database connection
+  db.all("SELECT 1", function(error, result) {
+      if (error) {
+          console.error("Error connecting to the database:", error);
+      } else {
+          console.log("Database connection successful");
+      }
+  });
+});
+process.on('exit', () => {
+  db.close();
+});
+
 
 
 //Step4 create 
@@ -519,6 +531,78 @@ app.get('/projects/update/:projectID', (req, res) => {
 
 
 
+
+app.get('/projects', (req, res) => {
+  // Check if projectsData already exists in the database
+  db.get("SELECT COUNT(*) AS count FROM projectsData", (error, row) => {
+    if (error) {
+      console.error("Error checking if data exists:", error);
+      res.status(500).send("Internal Server Error");
+      return;
+    }
+
+    if (row.count === 0) {
+      // Projects data doesn't exist, insert it into the database
+      const projectsData = [
+        // ... your projects data here ...
+      ];
+
+      // Insert projects into the database
+      const insertPromises = projectsData.map(project => {
+        return new Promise((resolve, reject) => {
+          db.run(`INSERT INTO projectsData (title, description) VALUES (?, ?)`,
+            [project.title, project.description],
+            (error) => {
+              if (error) {
+                console.error("Error inserting project:", error);
+                reject(error);
+              } else {
+                console.log("---> Project inserted successfully!");
+                resolve();
+              }
+            }
+          );
+        });
+      });
+
+      // Wait for all insert operations to complete
+      Promise.all(insertPromises)
+        .then(() => {
+          // Redirect to the same route to fetch and render the data
+          res.redirect('/projects');
+        })
+        .catch(error => {
+          // Handle error if any of the insert operations fail
+          console.error("Error inserting projects:", error);
+          res.status(500).send("Internal Server Error");
+        });
+    } else {
+      // Projects data already exists, retrieve and render it
+      db.all("SELECT * FROM projectsData", (error, projectsData) => {
+        if (error) {
+          console.error("Error retrieving projects data:", error);
+          res.status(500).send("Internal Server Error");
+        } else {
+          // Parse the JSON data from the database response
+          projectsData = projectsData.map(project => {
+            return {
+              title: project.title,
+              description: project.description
+            };
+          });
+
+          const model = {
+            projectsData: projectsData,
+            isLoggedIn: req.session.isLoggedIn,
+            name: req.session.name,
+            isAdmin: req.session.isAdmin
+          };
+          res.render("projects.handlebars", model);
+        }
+      });
+    }
+  });
+});
 
 
 
