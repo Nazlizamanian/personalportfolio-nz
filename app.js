@@ -12,14 +12,65 @@ const saltRounds=10;
 const app = express();
 const port = 8080
 
-
-//conntect to the database located in the model folder.
+//connected to the database located in the model folder.
 const db = new sqlite3.Database('model/portfolio.db');
 
-
-//Create Table experience and inserting values.
 /*
-db.run("CREATE TABLE experience (experienceID INTEGER PRIMARY KEY AUTOINCREMENT, userID INTEGER REFERENCES user(userID) ON DELETE CASCADE ON UPDATE CASCADE, jobTitle VARCHAR(100) NOT NULL, company VARCHAR(100), jobDescription TEXT, date DATE, location VARCHAR(100))", (error) => {
+//CREATE Table User and inserting values.
+db.run("CREATE TABLE user (userID INTEGER PRIMARY KEY AUTOINCREMENT, username TEXT NOT NULL, password TEXT NOT NULL, role INTEGER, email TEXT, regDate DATE)", (error) => {
+  if (error) {
+      console.log("Error: ", error);
+  } else {
+      console.log("----> Table user created!");
+      const users = [
+          { "id": 1, "username": "nazli01", "password": "$2b$10$tfdDufzBWk.QdWYPfaQfXusJC.0Q01QAvScAJidvis7v6oVs18V5q", "role": 1, "email": "zana22za@student.ju.se", "regDate": "2023-09-22" },
+          { "id": 2, "username": "momo22", "password": "$2b$10$3/mG9v4tM/v9SuIMcL4YU.UCEGGLoROTZl3bRbDYL9smt/AvsSseC", "role": 0, "email": "momo@gmail.com", "regDate": "2023-09-23" },
+          { "id": 3, "username": "kevin33", "password": "$2b$10$LaEsn9Z/LP1eroxO.zQvcuj8DHuPCE6eEVTc2x1JXpVWNeImS2522", "role": 0, "email": "kevin@gmail.com", "regDate": "2023-09-24" },
+          { "id": 4, "username": "lilly2434", "password": "$2b$10$xGuqChdNm405Llf/IFDjT.JPW6ixpvuAg4w18C9qZCENVP04EG2jq", "role": 0, "email": "lillyke@gmail.com", "regDate": "2023-09-25" },
+          { "id": 5, "username": "Taylor2378", "password": "$2b$10$UQIgf2LEpnJ3G1jpPgTmMeSk3R7Lj8Zl28x/3sYXhWgTgtkwEm8Wm", "role": 0, "email": "taylor@example.com", "regDate": "2023-09-29" }
+      ];
+
+      users.forEach((userData) => {
+          db.run("INSERT INTO user (username, password, role, email, regDate) VALUES (?, ?, ?, ?, ?)", [userData.username, userData.password, userData.role, userData.email, userData.regDate], (error) => {
+              if (error) {
+                  console.log("Error: ", error);
+              } else {
+                  console.log("Line added into user table!");
+              }
+          });
+      });
+  }
+});
+
+//CREATE Table Education and inserting values.
+db.run("CREATE TABLE education (educationID INTEGER PRIMARY KEY AUTOINCREMENT, userID INTEGER REFERENCES user(userID) ON DELETE CASCADE ON UPDATE CASCADE, school TEXT NOT NULL, degree TEXT, degreeDescription TEXT, date DATE)", (error) => {
+    if (error) {
+        console.log("Error: ", error);
+    } else {
+        console.log("----> Table education created!");
+        const education = [
+            { "userID": 1, "school": "Trollbodaskolan", "degree": "Middle school", "degreeDescription": "-", "date": "2007-2017" },
+            { "userID": 1, "school": "Internationella Engelska Gymnaiset Södermalm (IEGS)", "degree": "High school degree in natural science programme with specialization in social science", "degreeDescription": "The programme mainly focuses on research, analysis, and communication skills in the context of natural sciences and mathematics and interdisciplinary connections. It introduces core concepts, promotes scientific method awareness, improves language proficiency for scientific communication, fosters the integration of scientific elements, and encourages coherent knowledge integration in fields as biology, chemistry, physics. Additionally the programme puts a significant emphasis on social science as well.", "date": "2017-2020" },
+            { "userID": 1, "school": "EC Education Yrkeshögskola", "degree": "Programming 1 course.", "degreeDescription": "Programming 1 course in C.", "date": "2020" },
+            { "userID": 1, "school": "EC Education Yrkeshögskola", "degree": "Vocational Higher Educational Degree", "degreeDescription": "Software development with a specialization in Industrial Internet Of Things (IoT).", "date": "2020-2022" },
+            { "userID": 1, "school": "Jönköping University", "degree": "Degree of Bachelor of Science in Computer Engineering with specialization in Software Engineering and Mobile Platforms", "degreeDescription": "The education is largely based on projects and exercises that provide practical experience in the techniques being taught. The program focuses on understanding how computers work and the structure of computer networks. In the early stages of the program, the focus lies on understanding the basic fundamentals of computer science and mathematics. Following that, the program will dive deeper into mobile device development, web development, computer networks, and systems. The program includes learning in C and its derivatives such as C++, SQL database management systems, algorithms and data structures, object-oriented programming principles, computer networking concepts, Windows operating systems, as well as web technologies like HTML, CSS, and JavaScript.", "date": "2023-09-28" },
+        ];
+
+        education.forEach((eduData) => {
+            db.run("INSERT INTO education (userID, school, degree, degreeDescription, date) VALUES (?, ?, ?, ?, ?)", [eduData.userID, eduData.school, eduData.degree, eduData.degreeDescription, eduData.date], (error) => {
+                if (error) {
+                    console.log("Error: ", error);
+                } else {
+                    console.log("Line added into education table!");
+                }
+            });
+        });
+    }
+});
+
+
+//CREATE Table Experience and inserting values.
+db.run("CREATE TABLE experience (experienceID INTEGER PRIMARY KEY AUTOINCREMENT, userID INTEGER REFERENCES user(userID) ON DELETE CASCADE ON UPDATE CASCADE, jobTitle TEXT NOT NULL, company TEXT, jobDescription TEXT, date DATE, location TEXT)", (error) => {
   if (error) {
       console.log("Error: ", error);
   } else {
@@ -41,7 +92,58 @@ db.run("CREATE TABLE experience (experienceID INTEGER PRIMARY KEY AUTOINCREMENT,
           });
       });
   }
-}); */
+}); 
+
+//CREATE Table Projects and inserting values.
+db.run("CREATE TABLE projects(projectID INTEGER PRIMARY KEY AUTOINCREMENT, userID INTEGER REFERENCES user(userID) ON DELETE CASCADE ON UPDATE CASCADE, projectTitle TEXT NOT NULL, projectDescription TEXT, link TEXT)", (error) => {
+    if (error) {
+        console.log("Error: ", error);
+    } else {
+        console.log("----> Table projects created!");
+        const projects = [
+            { "userID": 1, "projectTitle": "Online Web Shop SQL", "projectDescription": "Online Web Shop created with SQL queries and ER diagram with both conceptual and logical diagrams that have been normalized to 3NF.", "link": "https://github.com/Nazlizamanian/OnlineWebShopDatabaseSQL" },
+            { "userID": 1, "projectTitle": "Bank system", "projectDescription": "Simple bank program that resembles the nature and primary functions of an ATM machine and fulfills the tasks one can expect to be done at a visit to the bank.", "link": "https://github.com/Nazlizamanian/LIA" },
+        ];
+
+        projects.forEach((projectData) => {
+            db.run("INSERT INTO projects (userID, projectTitle, projectDescription, link) VALUES (?, ?, ?, ?)", [projectData.userID, projectData.projectTitle, projectData.projectDescription, projectData.link], (error) => {
+                if (error) {
+                    console.log("Error: ", error);
+                } else {
+                    console.log("Line added into projects table!");
+                }
+            });
+        });
+    }
+});
+
+//CREATE Table Skills and inserting values.
+db.run("CREATE TABLE skills (skillsID INTEGER PRIMARY KEY AUTOINCREMENT, userID INTEGER REFERENCES user(userID) ON DELETE CASCADE ON UPDATE CASCADE, name TEXT NOT NULL, type TEXT, skillLevel NUMERIC)", (error) => {
+    if (error) {
+        console.log("Error: ", error);
+    } else {
+        console.log("----> Table experience created!");
+        const experiences = [
+            { "userID":1,"name": "C","type": "programming language", "skillLevel": "75" },
+            { "userID":1,"name": "C++","type": "programming language", "skillLevel": "70" },
+            { "userID":1,"name": "CSS","type": "stylesheet language", "skillLevel": "60" },
+            { "userID":1,"name": "HtML","type": "markup language", "skillLevel": "65" },
+            { "userID":1,"name": "SQL","type": "programming language", "skillLevel": "70" },
+        ];
+
+        experiences.forEach((skillsData) => {
+            db.run("INSERT INTO skills (userID, name, type, skillLevel) VALUES (?, ?, ?, ?)", [skillsData.userID, skillsData.name, skillsData.type, skillsData.skillLevel], (error) => {
+                if (error) {
+                    console.log("Error: ", error);
+                } else {
+                    console.log("Line added into experience table!");
+                }
+            });
+        });
+    }
+});
+*/
+
 
 //GET READ on table Education
 app.get('/education',(req,res)=>{
@@ -197,6 +299,7 @@ app.get('/login', (req, res) => {
   res.render('login.handlebars', model);
 });
 
+//Log In 
 async function comparePasswords(plainTextPassword, hashedPassword) {
   try {
       if (!plainTextPassword || !hashedPassword) {
@@ -215,9 +318,8 @@ app.post('/login', (req, res) => {
   const plainTextPassword = req.body.pw;
 
   // Retrieve the hashed password from your database based on the username
-  const sql = 'SELECT username, password FROM user WHERE username = ?';
+  const sql = 'SELECT username, password, role FROM user WHERE username = ?';
  
-
   db.get(sql, [user], async (err, row) => {
     if (err) {
       console.error(err);
@@ -227,7 +329,6 @@ app.post('/login', (req, res) => {
     if (row) {
       const hashedPasswordFromDatabase = row.password;
       const [result,compareErr]= await comparePasswords(plainTextPassword,hashedPasswordFromDatabase)
-
       // Compare the hashed password with the provided plain text password
     
       if (compareErr) {
@@ -237,7 +338,7 @@ app.post('/login', (req, res) => {
 
       if (result) {
         console.log(`${user} successfully logged in!`);
-        req.session.isAdmin = true;
+        req.session.isAdmin = (row.role==1);
         req.session.isLoggedIn = true;
         req.session.name = user;
         res.redirect('/');
@@ -251,7 +352,6 @@ app.post('/login', (req, res) => {
       }
   
     } else {
-      // User not found in the database
       console.log('User not found');
       req.session.isAdmin = false;
       req.session.isLoggedIn = false;
@@ -278,25 +378,6 @@ app.get('/logout', (req,res)=>{
   console.log('Logged out..')
   res.redirect('/')
 });
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 

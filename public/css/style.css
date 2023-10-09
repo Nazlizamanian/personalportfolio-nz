@@ -92,10 +92,6 @@ nav ul li a:hover {
 }
 
 /*Login */
-.form-page {
-  background-image: url('../img/pastel.jpg');
-}
-
 .login-container {
   display: flex;
   align-items: center;
@@ -142,6 +138,11 @@ button:hover {
 }
 #delete:hover{
   color: red;
+}
+.btn-project, #delete{
+  display: flex; 
+  justify-content: center; 
+  align-items: center;
 }
 
 form {
@@ -254,7 +255,6 @@ h2 {
 
 #experience {
   width: 100%;
-
 }
 
 .parallax-container2 {
@@ -517,12 +517,10 @@ a {
   border-color: transparent white transparent transparent;
 }
 
-/* Fix the circle for containers */
 .right::after {
   left: -60px;
 }
 
-/* The actual content */
 .content {
   padding: 4px 30px;
   background-color: white;
