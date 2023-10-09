@@ -145,6 +145,37 @@ button:hover {
   align-items: center;
 }
 
+/*projects card*/
+.card-container-p {
+  position: relative;
+  height: 100%;
+  text-align: center;
+  display: flex; /* Use flex to create a row of cards */
+  justify-content: center; /* Center the cards horizontally */
+}
+
+.card-container-project {
+  height: 350px;
+  width: 350px;
+  border-radius: 8%;
+  text-align: center;
+  margin: 10px; /* Adjust the margin to control spacing between cards */
+  background-color: #fff;
+}
+
+.card-header-project {
+  max-width: 320px;
+  padding-bottom: 1rem;
+  border-radius: 0.5em;
+}
+
+
+
+
+
+
+
+
 form {
   background-color: #FFFFFF;
   display: flex;

@@ -14,7 +14,7 @@ const port = 8080
 
 //connected to the database located in the model folder.
 const db = new sqlite3.Database('model/portfolio.db');
-
+/*
 //CREATE Table User and inserting values.
 db.run("CREATE TABLE IF NOT EXISTS user (userID INTEGER PRIMARY KEY AUTOINCREMENT, username TEXT NOT NULL, password TEXT NOT NULL, role INTEGER, email TEXT, regDate DATE)", (error) => {
   if (error) {
@@ -242,23 +242,8 @@ app.get('/about', (req, res) => {
   res.render('about.handlebars', model);
 });
 
-app.get('/projects', (req,res)=>{
-  const model={
-    isLoggedIn: req.session.isLoggedIn,
-    name: req.session.name,
-    isAdmin: req.session.isAdmin
-  }
-  res.render('projects.handlebars', model);
-});
 
-app.get('/projects', (req,res)=>{
-  const model={
-    isLoggedIn: req.session.isLoggedIn,
-    name: req.session.name,
-    isAdmin: req.session.isAdmin
-  }
-  res.redirect('onlinewebshop', model);
-});
+
 
 app.get('/onlinewebshop', (req,res)=>{
   const model={
@@ -395,29 +380,22 @@ process.on('exit', () => {
 
 //Step4 create 
 app.get('/projects', (req, res) => {
+  console.log(`HÄR`)
   db.all("SELECT * FROM projects", function (error, theProjects) {
-    if (req.session.isLoggedIn === true && req.session.isAdmin === true) {
-      const model = {
-        dbError: true,
-        theError: error,
-        projects: [],  
-        isLoggedIn: req.session.isLoggedIn,
-        name: req.session.name,
-        isAdmin: req.session.isAdmin,
-      }
-      res.render("projects.handlebars", model); 
+    if (error) {
+       // fixa err
+
     } else {
-      const model = {
-        dbError: false,
-        theError: "",
-        projects: theProjects,
-        isLoggedIn: req.session.isLoggedIn,
-        name: req.session.name,
-        isAdmin: req.session.isAdmin,
-      }
-      res.render("projects.handlebars", model); 
-    }
-  });
+        console.log(theProjects);
+        const model = {
+          projects: theProjects,
+          isLoggedIn: req.session.isLoggedIn,
+          name: req.session.name,
+          isAdmin: req.session.isAdmin,
+        }
+        res.render("projects.handlebars", model); 
+      } 
+    });
 });
 
 //DELETE, can only be preformed by an admin.
@@ -530,9 +508,7 @@ app.get('/projects/update/:projectID', (req, res) => {
 });
 
 
-
-
-app.get('/projects', (req, res) => {
+app.get('/projects1111', (req, res) => {
   // Check if projectsData already exists in the database
   db.get("SELECT COUNT(*) AS count FROM projectsData", (error, row) => {
     if (error) {

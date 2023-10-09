@@ -7,7 +7,7 @@
         </div>
         {{/if}}
 
-        <div>
+        <div class="card-container-p">
             {{#if dbError}}
             <div>
                 Problem with the database<br />
@@ -15,13 +15,11 @@
             </div>
             {{else}}
             {{#each projects}}
-            <div>
-                <div class="card">
-                    <div class="card-header">
-                        <div>{{projectTitle}}</div>
-                        <div>{{projectDescription}}</div>
-                        <div>{{link}}</div>
-                    </div>
+            <div class="card-container-project">
+                <div class="card-header-project">
+                    <div>{{projectTitle}}</div>
+                    <div>{{projectDescription}}</div>
+                    <div>{{link}}</div>
                 </div>
             </div>
             {{/each}}
