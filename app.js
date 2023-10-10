@@ -243,8 +243,6 @@ app.get('/about', (req, res) => {
 });
 
 
-
-
 app.get('/onlinewebshop', (req,res)=>{
   const model={
     isLoggedIn: req.session.isLoggedIn,
@@ -383,8 +381,7 @@ app.get('/projects', (req, res) => {
   console.log(`HÄR`)
   db.all("SELECT * FROM projects", function (error, theProjects) {
     if (error) {
-       // fixa err
-
+       // fix err
     } else {
         console.log(theProjects);
         const model = {
@@ -396,6 +393,19 @@ app.get('/projects', (req, res) => {
         res.render("projects.handlebars", model); 
       } 
     });
+});
+
+app.get('/projects/delete', (req,res)=>{
+  if (req.session.isLoggedIn === true && req.session.isAdmin === true) {
+    const model={
+      isLoggedIn: req.session.isLoggedIn,
+      name: req.session.name,
+      isAdmin: req.session.isAdmin,
+    }
+    res.render('deleteproject.handlebars', model)
+  } else{
+    res.redirect('/login')
+  }
 });
 
 //DELETE, can only be preformed by an admin.
@@ -430,7 +440,6 @@ app.delete('/projects/delete/:id', (req, res) => {
     res.redirect('/login');
   }
 });
-
 
 app.get('/projects/new', (req,res)=>{
   if (req.session.isLoggedIn === true && req.session.isAdmin === true) {

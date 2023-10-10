@@ -4,6 +4,7 @@
         {{#if isAdmin}}
         <div>
             <a href="/projects/new">New Project</a>
+            
         </div>
         {{/if}}
 
@@ -21,6 +22,8 @@
                     <div>{{projectDescription}}</div>
                     <div>{{link}}</div>
                 </div>
+                  <a href="/projects/update">Modify Project</a>
+                  <a href="/projects/delete" id="delete">DELETE Project</a>
             </div>
             {{/each}}
             {{/if}}

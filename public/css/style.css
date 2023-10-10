@@ -136,10 +136,11 @@ button {
 button:hover {
   color: black;
 }
+
 #delete:hover{
   color: red;
 }
-.btn-project, #delete{
+.btn-project{
   display: flex; 
   justify-content: center; 
   align-items: center;

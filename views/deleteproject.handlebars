@@ -1,0 +1,19 @@
+<div id="main">
+    <div>
+        <h1>Delete Project</h1>
+        <div>
+            {{#if isLoggedIn}}
+                {{#if isAdmin}}
+                    <button id="delete">Delete Project</button>
+                {{else}}
+                    <p>Must be an admin to delete a project!</p>
+                {{/if}}
+            {{else}}
+                <p>
+                    Must be logged in to delete a project! <br />
+                    Go to <a href="/login">Log In</a>
+                </p>
+            {{/if}}
+        </div>
+    </div>
+</div>
