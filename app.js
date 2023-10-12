@@ -407,34 +407,20 @@ app.get('/projects/delete', (req,res)=>{
     res.redirect('/login')
   }
 });
-
 //DELETE, can only be preformed by an admin.
-app.delete('/projects/delete/:id', (req, res) => {
-  const projectId = req.params.id; 
+app.delete('/projects/delete', (req, res) => {
+  const newp = [
+    req.body.projectTitle, req.body.projectDescription, req.body.link,
+  ];
 
   if (req.session.isLoggedIn === true && req.session.isAdmin === true) {
-    const sql = 'DELETE FROM project WHERE projectID = ?';
-
-    db.run(sql, [projectId], function (error) { 
+    db.run("DELETE FROM projects WHERE projectTitle = ? AND projectDescription = ? AND link = ?", [newp[0], newp[1], newp[2]], (error) => {
       if (error) {
-        const model = {
-          dbError: true,
-          theError: error,
-          isLoggedIn: req.session.isLoggedIn,
-          name: req.session.name,
-          isAdmin: req.session.isAdmin,
-        };
-        res.render("home.handlebars", model);
+        console.log("ERROR: ", error);
       } else {
-        const model = {
-          dbError: false,
-          theError: "",
-          isLoggedIn: req.session.isLoggedIn,
-          name: req.session.name,
-          isAdmin: req.session.isAdmin,
-        };
-        res.render("home.handlebars", model);
+        console.log("Row deleted from the projects table!");
       }
+      res.redirect('/projects');
     });
   } else {
     res.redirect('/login');
@@ -485,7 +471,7 @@ app.get('/projects/update', (req,res)=>{
   }
 });
 app.get('/projects/update/:projectID', (req, res) => {
-  const id = req.params.id;
+  const id = req.params.projectID;
   db.get("SELECT * FROM projects WHERE projectID=?", [id], function (error, theProject) {
     if (error) {
       console.log("Error: ", error);

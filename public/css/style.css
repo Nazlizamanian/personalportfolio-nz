@@ -170,13 +170,6 @@ button:hover {
   border-radius: 0.5em;
 }
 
-
-
-
-
-
-
-
 form {
   background-color: #FFFFFF;
   display: flex;
@@ -204,11 +197,6 @@ input {
   height: auto;
 }
 
-.sign-in-container {
-  left: 0;
-  width: 50%;
-  z-index: 2;
-}
 .input-box{
   width:270px;
 }
@@ -318,7 +306,6 @@ a {
   box-shadow: 20px 20px 20px rgba(0, 0, 0, 0.2);
 }
 
-
 .card {
   display: flex;
   max-width: 320px;
@@ -359,23 +346,6 @@ a {
   border-radius: 0.3em;
   background-position: center;
   background-size: cover;
-}
-
-.card-img h3 {
-  padding: 2px;
-}
-
-.card:nth-of-type(1) .card-img {
-  background-image: url('/img/onlineweb.jpg');
-}
-
-.card:nth-of-type(2) .card-img {
-  background-image: url('/img/bankpicture.jpg');
-  /*Source website: https://www.vectorstock.com/royalty-free-vector/icons-for-the-banking-system-vector-20983306*/
-}
-
-.parallax-container2 .card h3 {
-  padding: 2px;
 }
 
 
@@ -492,7 +462,7 @@ a {
   left: 20%;
   margin-left: -3px;
   margin-bottom: 23px;
-  height: 259vh;
+  height: 233vh;
 }
 
 #experience .timeline::after {
@@ -505,7 +475,7 @@ a {
   left: 20%;
   margin-left: -3px;
   margin-bottom: 23px;
-  height: 130vh;
+  height: 116vh;
 }
 
 /* Container around content */
