@@ -377,6 +377,7 @@ app.get('/logout', (req,res)=>{
   res.redirect('/')
 });
 
+
 db.serialize(function() {
   // Test the database connection
   db.all("SELECT 1", function(error, result) {
@@ -412,22 +413,6 @@ app.get('/projects', (req, res) => {
     });
 });
 
-/*
-app.get('/projects/delete/:id', (req,res)=>{
-  console.log(`deletebutton1`)
-  if (req.session.isLoggedIn === true && req.session.isAdmin === true) {
-    const model={
-      isLoggedIn: req.session.isLoggedIn,
-      name: req.session.name,
-      isAdmin: req.session.isAdmin,
-    }
-    res.render('deleteproject.handlebars', model)
-  } else{
-    res.redirect('/login')
-  }
-});
-*/  
-
 //DELETE, can only be preformed by an admin.
 app.get('/projects/delete/:id', (req, res) => {
   const id= req.params.id
@@ -456,6 +441,7 @@ app.get('/projects/delete/:id', (req, res) => {
   }
 });
 
+//NEW ADD project
 app.get('/projects/new', (req,res)=>{
   if (req.session.isLoggedIn === true && req.session.isAdmin === true) {
     const model={
@@ -471,10 +457,11 @@ app.get('/projects/new', (req,res)=>{
 app.post('/projects/new', (req,res )=>{
   console.log("newproject")
   const newp=[
-    req.body.projectTitle, req.body.projectDescription, req.body.link,
+    req.body.projectID,req.body.projectTitle, req.body.projectDescription, req.body.link,
+    req.body.userID
   ]
   if(req.session.isLoggedIn==true && req.session.isAdmin==true){
-    db.run("INSERT INTO projects (projectTitle, projectDescription, link) VALUES (?,?,?)", newp, (error)=>{
+    db.run("INSERT INTO projects (projectID,projectTitle, projectDescription, link) VALUES (?,?,?,?)", newp, (error)=>{
       if(error){
         console.log("ERROR: ", error)
       } else{
@@ -500,6 +487,46 @@ app.get('/projects/update', (req,res)=>{
     res.redirect('/login')
   }
 });
+
+app.get('/projects/update/:projectID', (req, res) => {
+  const id = req.params.id;
+  if (req.session.isLoggedIn === true && req.session.isAdmin === true) {
+    // Define the new values for the project's attributes (e.g., name and description)
+    const newName = 'New Project Name';
+    const newDescription = 'New Project Description';
+
+    // Use an UPDATE query to update the project
+    db.run(
+      "UPDATE projects SET projectTitle = ?, projectDescription = ? WHERE projectID = ?",
+      [newName, newDescription, id],
+      function (error, result) {
+        if (error) {
+          const model = {
+            dbError: true,
+            theError: error,
+            idLoggedIn: req.session.isLoggedIn,
+            name: req.session.name,
+            isAdmin: req.session.isAdmin
+          }
+          res.render('home.handlebars', model);
+        } else {
+          const model = {
+            dbError: false,
+            theError: error,
+            idLoggedIn: req.session.isLoggedIn,
+            name: req.session.name,
+            isAdmin: req.session.isAdmin
+          }
+          res.redirect('/');
+        }
+      }
+    );
+  } else {
+    res.redirect('/login');
+  }
+});
+
+/*
 app.get('/projects/update/:projectID', (req, res) => {
   const id = req.params.projectID;
   db.get("SELECT * FROM projects WHERE projectID=?", [id], function (error, theProject) {
@@ -531,7 +558,7 @@ app.get('/projects/update/:projectID', (req, res) => {
     }
   });
 });
-
+*/
 
 app.get('/projects1111', (req, res) => {
   // Check if projectsData already exists in the database
@@ -610,7 +637,7 @@ app.get('/projects1111', (req, res) => {
 
 
 
-
+/*
 
 //All CRUD uperations one 1 table: User. 
 //CREATE
@@ -659,7 +686,7 @@ app.get('/user', (req, res) => {
       }
       res.render("user.handlebars", model);
   });
-});
+});*/
 
 // run the server and make it listen to the port
 app.listen(port, () => {
