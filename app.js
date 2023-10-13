@@ -15,132 +15,152 @@ const port = 8080
 //connected to the database located in the model folder.
 const db = new sqlite3.Database('model/portfolio.db');
 
-//CREATE Table User and inserting values.
+// CREATE Table User and inserting values.
 db.run("CREATE TABLE IF NOT EXISTS user (userID INTEGER PRIMARY KEY AUTOINCREMENT, username TEXT NOT NULL, password TEXT NOT NULL, role INTEGER, email TEXT, regDate DATE)", (error) => {
   if (error) {
-      console.log("Error: ", error);
+    console.log("Error: ", error);
   } else {
-      console.log("----> Table user created!");
-      const users = [
-          { "id": 1, "username": "nazli01", "password": "$2b$10$tfdDufzBWk.QdWYPfaQfXusJC.0Q01QAvScAJidvis7v6oVs18V5q", "role": 1, "email": "zana22za@student.ju.se", "regDate": "2023-09-22" },
-          { "id": 2, "username": "momo22", "password": "$2b$10$3/mG9v4tM/v9SuIMcL4YU.UCEGGLoROTZl3bRbDYL9smt/AvsSseC", "role": 0, "email": "momo@gmail.com", "regDate": "2023-09-23" },
-          { "id": 3, "username": "kevin33", "password": "$2b$10$LaEsn9Z/LP1eroxO.zQvcuj8DHuPCE6eEVTc2x1JXpVWNeImS2522", "role": 0, "email": "kevin@gmail.com", "regDate": "2023-09-24" },
-          { "id": 4, "username": "lilly2434", "password": "$2b$10$xGuqChdNm405Llf/IFDjT.JPW6ixpvuAg4w18C9qZCENVP04EG2jq", "role": 0, "email": "lillyke@gmail.com", "regDate": "2023-09-25" },
-          { "id": 5, "username": "Taylor2378", "password": "$2b$10$UQIgf2LEpnJ3G1jpPgTmMeSk3R7Lj8Zl28x/3sYXhWgTgtkwEm8Wm", "role": 0, "email": "taylor@example.com", "regDate": "2023-09-29" }
-      ];
+    console.log("----> Table user created!");
+    const users = [
+      { "username": "nazli01", "password": "$2b$10$tfdDufzBWk.QdWYPfaQfXusJC.0Q01QAvScAJidvis7v6oVs18V5q", "role": 1, "email": "zana22za@student.ju.se", "regDate": "2023-09-22" },
+      { "username": "momo22", "password": "$2b$10$3/mG9v4tM/v9SuIMcL4YU.UCEGGLoROTZl3bRbDYL9smt/AvsSseC", "role": 0, "email": "momo@gmail.com", "regDate": "2023-09-23" },
+      { "username": "kevin33", "password": "$2b$10$LaEsn9Z/LP1eroxO.zQvcuj8DHuPCE6eEVTc2x1JXpVWNeImS2522", "role": 0, "email": "kevin@gmail.com", "regDate": "2023-09-24" },
+      { "username": "lilly2434", "password": "$2b$10$xGuqChdNm405Llf/IFDjT.JPW6ixpvuAg4w18C9qZCENVP04EG2jq", "role": 0, "email": "lillyke@gmail.com", "regDate": "2023-09-25" },
+      { "username": "Taylor2378", "password": "$2b$10$UQIgf2LEpnJ3G1jpPgTmMeSk3R7Lj8Zl28x/3sYXhWgTgtkwEm8Wm", "role": 0, "email": "taylor@example.com", "regDate": "2023-09-29" }
+    ];
 
-      users.forEach((userData) => {
-          db.run("INSERT OR IGNORE INTO user (username, password, role, email, regDate) VALUES (?, ?, ?, ?, ?)", [userData.username, userData.password, userData.role, userData.email, userData.regDate], (error) => {
-              if (error) {
-                  console.log("Error: ", error);
-              } else {
-                  console.log("Line added into user table!");
-              }
-          });
-      });
+    users.forEach((userData) => {
+      db.run("INSERT OR IGNORE INTO user (username, password, role, email, regDate) VALUES (?, ?, ?, ?, ?)",
+        [userData.username, userData.password, userData.role, userData.email, userData.regDate], (error) => {
+          if (error) {
+            console.log("Error: ", error);
+          } else {
+            console.log("Line added into user table!");
+          }
+        });
+    });
   }
 });
 
-//CREATE Table Education and inserting values.
-db.run("CREATE TABLE IF NOT EXISTS education (educationID INTEGER PRIMARY KEY AUTOINCREMENT, userID INTEGER REFERENCES user(userID) ON DELETE CASCADE ON UPDATE CASCADE, school TEXT NOT NULL, degree TEXT, degreeDescription TEXT, date DATE)", (error) => {
-    if (error) {
-        console.log("Error: ", error);
-    } else {
-        console.log("----> Table education created!");
+// CREATE Table Education and inserting values.
+db.run("CREATE TABLE IF NOT EXISTS education (educationID INTEGER PRIMARY KEY AUTOINCREMENT, userID INTEGER REFERENCES user(userID) ON DELETE CASCADE ON UPDATE CASCADE, school TEXT NOT NULL, degree TEXT NOT NULL, degreeDescription TEXT, date DATE)", (error) => {
+  if (error) {
+    console.log("Error: ", error);
+  } else {
+    console.log("----> Table education created!");
+
+    // Use a flag to prevent duplicate insertions
+    let insertedEducation = false;
+
+    // Check if education data has been inserted before
+    db.get("SELECT 1 FROM education LIMIT 1", (selectError, row) => {
+      if (!selectError && row) {
+        insertedEducation = true;
+      }
+
+      // Insert education data if it hasn't been inserted before
+      if (!insertedEducation) {
         const education = [
-            { "userID": 1, "school": "Trollbodaskolan", "degree": "Middle school", "degreeDescription": "-", "date": "2007-2017" },
-            { "userID": 1, "school": "Internationella Engelska Gymnaiset Södermalm (IEGS)", "degree": "High school degree in natural science programme with specialization in social science", "degreeDescription": "The programme mainly focuses on research, analysis, and communication skills in the context of natural sciences and mathematics and interdisciplinary connections. It introduces core concepts, promotes scientific method awareness, improves language proficiency for scientific communication, fosters the integration of scientific elements, and encourages coherent knowledge integration in fields as biology, chemistry, physics. Additionally the programme puts a significant emphasis on social science as well.", "date": "2017-2020" },
-            { "userID": 1, "school": "EC Education Yrkeshögskola", "degree": "Programming 1 course.", "degreeDescription": "Programming 1 course in C.", "date": "2020" },
-            { "userID": 1, "school": "EC Education Yrkeshögskola", "degree": "Vocational Higher Educational Degree", "degreeDescription": "Software development with a specialization in Industrial Internet Of Things (IoT).", "date": "2020-2022" },
-            { "userID": 1, "school": "Jönköping University", "degree": "Degree of Bachelor of Science in Computer Engineering with specialization in Software Engineering and Mobile Platforms", "degreeDescription": "The education is largely based on projects and exercises that provide practical experience in the techniques being taught. The program focuses on understanding how computers work and the structure of computer networks. In the early stages of the program, the focus lies on understanding the basic fundamentals of computer science and mathematics. Following that, the program will dive deeper into mobile device development, web development, computer networks, and systems. The program includes learning in C and its derivatives such as C++, SQL database management systems, algorithms and data structures, object-oriented programming principles, computer networking concepts, Windows operating systems, as well as web technologies like HTML, CSS, and JavaScript.", "date": "2023-09-28" },
+          { "userID": 1, "school": "Trollbodaskolan", "degree": "Middle school", "degreeDescription": "-", "date": "2007-2017" },
+          { "userID": 1, "school": "Internationella Engelska Gymnaiset Södermalm (IEGS)", "degree": "High school degree in natural science program with specialization in social science", "degreeDescription": "The program mainly focuses on research, analysis, and communication skills in the context of natural sciences and mathematics and interdisciplinary connections. It introduces core concepts, promotes scientific method awareness, improves language proficiency for scientific communication, fosters the integration of scientific elements, and encourages coherent knowledge integration in fields such as biology, chemistry, physics. Additionally, the program puts a significant emphasis on social science as well.", "date": "2017-2020" },
+          { "userID": 1, "school": "EC Education Yrkeshögskola", "degree": "Programming 1 course.", "degreeDescription": "Programming 1 course in C.", "date": "2020" },
+          { "userID": 1, "school": "EC Education Yrkeshögskola", "degree": "Vocational Higher Educational Degree", "degreeDescription": "Software development with a specialization in Industrial Internet Of Things (IoT).", "date": "2020-2022" },
+          { "userID": 1, "school": "Jönköping University", "degree": "Degree of Bachelor of Science in Computer Engineering with specialization in Software Engineering and Mobile Platforms", "degreeDescription": "The education is largely based on projects and exercises that provide practical experience in the techniques being taught. The program focuses on understanding how computers work and the structure of computer networks. In the early stages of the program, the focus lies on understanding the basic fundamentals of computer science and mathematics. Following that, the program will dive deeper into mobile device development, web development, computer networks, and systems. The program includes learning in C and its derivatives such as C++, SQL database management systems, algorithms and data structures, object-oriented programming principles, computer networking concepts, Windows operating systems, as well as web technologies like HTML, CSS, and JavaScript.", "date": "2023-09-28" }
         ];
 
         education.forEach((eduData) => {
-            db.run("INSERT OR IGNORE INTO education (userID, school, degree, degreeDescription, date) VALUES (?, ?, ?, ?, ?)", [eduData.userID, eduData.school, eduData.degree, eduData.degreeDescription, eduData.date], (error) => {
-                if (error) {
-                    console.log("Error: ", error);
-                } else {
-                    console.log("Line added into education table!");
-                }
+          db.run("INSERT INTO education (userID, school, degree, degreeDescription, date) VALUES (?, ?, ?, ?, ?)",
+            [eduData.userID, eduData.school, eduData.degree, eduData.degreeDescription, eduData.date], (error) => {
+              if (error) {
+                console.log("Error: ", error);
+              } else {
+                console.log("Line added into education table!");
+              }
             });
         });
-    }
+      }
+    });
+  }
 });
 
-
-//CREATE Table Experience and inserting values.
+// CREATE Table Experience and inserting values.
 db.run("CREATE TABLE IF NOT EXISTS experience (experienceID INTEGER PRIMARY KEY AUTOINCREMENT, userID INTEGER REFERENCES user(userID) ON DELETE CASCADE ON UPDATE CASCADE, jobTitle TEXT NOT NULL, company TEXT, jobDescription TEXT, date DATE, location TEXT)", (error) => {
   if (error) {
-      console.log("Error: ", error);
+    console.log("Error: ", error);
   } else {
-      console.log("----> Table experience created!");
-      const experiences = [
-          { "userID":1,"jobTitle": "Assistant Floor Manager","company": "O'Learys Mall Of Scandinavia", "jobDescription": "Responsibilities consisted of arranging the resturants events, serving food and beverages, managing pentathlons and other games activities. Responsible for smaller sections of the departments including the bar and event organizer ( 3-& 5 battles, bachelor’s and children’s parties) Managed administrative functions for the day, served as the primary liaison between customers and employees, utilizing the best judgement in tandem with the restaurants standards to resolve conflict that might have arose. Maintained and executed routines site sanitation,supervising and furthermore.", "date": "April 2016- January 2020", "location": "Stockholm, Sweden" },
-          { "userID":2,"jobTitle": "Caretaker ","company":"Solom AB", "jobDescription": "Caretaker at a special needs group home residence, providing assistance and support to residents.", "date": "January 2020 – August 2020", "location": "Stockholm,Sweden" },
-          { "userID":3,"jobTitle": "Salesman", "company":"OKQ8", "jobDescription": "Salesman at a gas service station. Varying job tasks from cleaning, taking care of customers. Additionally, car rental services and taking care of the different vehicles and trailers.", "date": "2023-09-30", "location": "Stockholm, Sweden" }
+    console.log("----> Table experience created!");
 
-      ];
+    // Use a flag to prevent duplicate insertions
+    let insertedExperience = false;
 
-      experiences.forEach((expData) => {
-          db.run("INSERT OR IGNORE INTO experience (userID, jobTitle, company, jobDescription, date, location) VALUES (?, ?, ?, ?, ?, ?)", [expData.userID, expData.jobTitle, expData.company, expData.jobDescription, expData.date, expData.location], (error) => {
+    // Check if experience data has been inserted before
+    db.get("SELECT 1 FROM experience LIMIT 1", (selectError, row) => {
+      if (!selectError && row) {
+        insertedExperience = true;
+      }
+
+      // Insert experience data if it hasn't been inserted before
+      if (!insertedExperience) {
+        const experiences = [
+          { "experienceID": 1, "userID": 1, "jobTitle": "Assistant Floor Manager", "company": "O'Learys Mall Of Scandinavia", "jobDescription": "Responsibilities consisted of arranging the resturants events, serving food and beverages, managing pentathlons and other games activities. Responsible for smaller sections of the departments including the bar and event organizer (3-& 5 battles, bachelor’s and children’s parties). Managed administrative functions for the day, served as the primary liaison between customers and employees, utilizing the best judgment in tandem with the restaurant's standards to resolve conflict that might have arisen. Maintained and executed routine site sanitation, supervising, and more.", "date": "April 2016 - January 2020", "location": "Stockholm, Sweden" },
+          { "experienceID": 2, "userID": 1, "jobTitle": "Caretaker", "company": "Solom AB", "jobDescription": "Caretaker at a special needs group home residence, providing assistance and support to residents.", "date": "January 2020 – August 2020", "location": "Stockholm, Sweden" },
+          { "experienceID": 3, "userID": 1, "jobTitle": "Salesman", "company": "OKQ8", "jobDescription": "Salesman at a gas service station. Varying job tasks from cleaning, taking care of customers. Additionally, car rental services and taking care of the different vehicles and trailers.", "date": "2023-09-30", "location": "Stockholm, Sweden" }
+        ];
+
+        experiences.forEach((expData) => {
+          db.run("INSERT INTO experience (experienceID, userID, jobTitle, company, jobDescription, date, location) VALUES (?, ?, ?, ?, ?, ?, ?)",
+            [expData.experienceID, expData.userID, expData.jobTitle, expData.company, expData.jobDescription, expData.date, expData.location], (error) => {
               if (error) {
-                  console.log("Error: ", error);
+                console.log("Error: ", error);
               } else {
-                  console.log("Line added into experience table!");
+                console.log("Line added into experience table!");
               }
-          });
-      });
+            });
+        });
+      }
+    });
   }
-}); 
+});
 
-//CREATE Table Projects and inserting values.
-db.run("CREATE TABLE IF NOT EXISTS projects(projectID INTEGER PRIMARY KEY AUTOINCREMENT, userID INTEGER REFERENCES user(userID) ON DELETE CASCADE ON UPDATE CASCADE, projectTitle TEXT NOT NULL, projectDescription TEXT, link TEXT)", (error) => {
-    if (error) {
-        console.log("Error: ", error);
-    } else {
-        console.log("----> Table projects created!");
+// CREATE Table Projects and inserting values.
+db.run("CREATE TABLE IF NOT EXISTS projects (projectID INTEGER PRIMARY KEY AUTOINCREMENT, userID INTEGER REFERENCES user(userID) ON DELETE CASCADE ON UPDATE CASCADE, projectTitle TEXT NOT NULL, projectDescription TEXT, link TEXT)", (error) => {
+  if (error) {
+    console.log("Error: ", error);
+  } else {
+    console.log("----> Table projects created!");
+
+    // Use a flag to prevent duplicate insertions
+    let insertedProjects = false;
+
+    // Check if projects data has been inserted before
+    db.get("SELECT 1 FROM projects LIMIT 1", (selectError, row) => {
+      if (!selectError && row) {
+        insertedProjects = true;
+      }
+
+      // Insert projects data if it hasn't been inserted before
+      if (!insertedProjects) {
         const projects = [
-            { "userID": 1, "projectTitle": "Online Web Shop SQL", "projectDescription": "Online Web Shop created with SQL queries and ER diagram with both conceptual and logical diagrams that have been normalized to 3NF.", "link": "https://github.com/Nazlizamanian/OnlineWebShopDatabaseSQL" },
-            { "userID": 1, "projectTitle": "Bank system", "projectDescription": "Simple bank program that resembles the nature and primary functions of an ATM machine and fulfills the tasks one can expect to be done at a visit to the bank.", "link": "https://github.com/Nazlizamanian/LIA" },
+          { "projectID": 1, "userID": 1, "projectTitle": "Online Web Shop SQL", "projectDescription": "Online Web Shop created with SQL queries and ER diagram with both conceptual and logical diagrams that have been normalized to 3NF.", "link": "https://github.com/Nazlizamanian/OnlineWebShopDatabaseSQL" },
+          { "projectID": 2, "userID": 1, "projectTitle": "Bank system", "projectDescription": "Simple bank program that resembles the nature and primary functions of an ATM machine and fulfills the tasks one can expect to be done at a visit to the bank.", "link": "https://github.com/Nazlizamanian/LIA" },
+          { "projectID": 3, "userID": 1, "projectTitle": "BlackJack Game", "projectDescription": "Small blackjack game also known as 21 created in C++", "link": "-" },
         ];
 
         projects.forEach((projectData) => {
-            db.run("INSERT OR IGNORE INTO projects (userID, projectTitle, projectDescription, link) VALUES (?, ?, ?, ?)", [projectData.userID, projectData.projectTitle, projectData.projectDescription, projectData.link], (error) => {
-                if (error) {
-                    console.log("Error: ", error);
-                } else {
-                    console.log("Line added into projects table!");
-                }
+          db.run("INSERT INTO projects (projectID, userID, projectTitle, projectDescription, link) VALUES (?, ?, ?, ?, ?)",
+            [projectData.projectID, projectData.userID, projectData.projectTitle, projectData.projectDescription, projectData.link], (error) => {
+              if (error) {
+                console.log("Error: ", error);
+              } else {
+                console.log("Line added into projects table!");
+              }
             });
         });
-    }
-});
-
-//CREATE Table Skills and inserting values.
-db.run("CREATE TABLE IF NOT EXISTS skills (skillsID INTEGER PRIMARY KEY AUTOINCREMENT, userID INTEGER REFERENCES user(userID) ON DELETE CASCADE ON UPDATE CASCADE, sname TEXT NOT NULL, type TEXT, skillLevel NUMERIC)", (error) => {
-  if (error) {
-      console.log("Error: ", error);
-  } else {
-      console.log("----> Table skills created!");
-      const skillsData = [
-        { "userID": 1, "name": "C", "type": "programming language", "skillLevel": 75 },
-        { "userID": 1, "name": "C++", "type": "programming language", "skillLevel": 70 },
-        { "userID": 1, "name": "CSS", "type": "stylesheet language", "skillLevel": 60 },
-        { "userID": 1, "name": "HTML", "type": "markup language", "skillLevel": 65 },
-        { "userID": 1, "name": "SQL", "type": "programming language", "skillLevel": 70 },
-      ];
-
-      skillsData.forEach((data) => {
-          db.run("INSERT OR IGNORE INTO skills (userID, sname, type, skillLevel) VALUES (?, ?, ?, ?)", [data.userID, data.name, data.type, data.skillLevel], (error) => {
-              if (error) {
-                  console.log("Error: ", error);
-              } else {
-                  console.log("Line added into skills table!");
-              }
-          });
-      });
+      }
+    });
   }
 });
+
 
 
 //GET READ on table Education
@@ -176,7 +196,6 @@ app.put('/users/:userID', (req, res) => {
     res.status(401).json({ error: 'Unauthorized' });
   }
 }); 
-
 
 //Use of a GET CRUD operation on one of your tables, 
 //retrieve more information about an element by clicking on it
@@ -429,7 +448,7 @@ app.get('/projects/delete/:id', (req, res) => {
           name:req.session.name,
           isAdmin:req.session.isAdmin
         }
-      res.redirect('home.handlebars',model);
+      res.redirect('/');
       }
     }) 
   } else {
