@@ -14,7 +14,7 @@ const port = 8080
 
 //connected to the database located in the model folder.
 const db = new sqlite3.Database('model/portfolio.db');
-/*
+
 //CREATE Table User and inserting values.
 db.run("CREATE TABLE IF NOT EXISTS user (userID INTEGER PRIMARY KEY AUTOINCREMENT, username TEXT NOT NULL, password TEXT NOT NULL, role INTEGER, email TEXT, regDate DATE)", (error) => {
   if (error) {
@@ -115,7 +115,7 @@ db.run("CREATE TABLE IF NOT EXISTS projects(projectID INTEGER PRIMARY KEY AUTOIN
         });
     }
 });
-/*
+
 //CREATE Table Skills and inserting values.
 db.run("CREATE TABLE IF NOT EXISTS skills (skillsID INTEGER PRIMARY KEY AUTOINCREMENT, userID INTEGER REFERENCES user(userID) ON DELETE CASCADE ON UPDATE CASCADE, sname TEXT NOT NULL, type TEXT, skillLevel NUMERIC)", (error) => {
   if (error) {
@@ -123,11 +123,11 @@ db.run("CREATE TABLE IF NOT EXISTS skills (skillsID INTEGER PRIMARY KEY AUTOINCR
   } else {
       console.log("----> Table skills created!");
       const skillsData = [
-          { "userID": 1, "name": "C", "type": "programming language", "skillLevel": 75 },
-          { "userID": 1, "name": "C++", "type": "programming language", "skillLevel": 70 },
-          { "userID": 1, "name": "CSS", "type": "stylesheet language", "skillLevel": 60 },
-          { "userID": 1, "name": "HTML", "type": "markup language", "skillLevel": 65 },
-          { "userID": 1, "name": "SQL", "type": "programming language", "skillLevel": 70 },
+        { "userID": 1, "name": "C", "type": "programming language", "skillLevel": 75 },
+        { "userID": 1, "name": "C++", "type": "programming language", "skillLevel": 70 },
+        { "userID": 1, "name": "CSS", "type": "stylesheet language", "skillLevel": 60 },
+        { "userID": 1, "name": "HTML", "type": "markup language", "skillLevel": 65 },
+        { "userID": 1, "name": "SQL", "type": "programming language", "skillLevel": 70 },
       ];
 
       skillsData.forEach((data) => {
@@ -141,7 +141,7 @@ db.run("CREATE TABLE IF NOT EXISTS skills (skillsID INTEGER PRIMARY KEY AUTOINCR
       });
   }
 });
-*/
+
 
 //GET READ on table Education
 app.get('/education',(req,res)=>{
@@ -242,7 +242,6 @@ app.get('/about', (req, res) => {
   res.render('about.handlebars', model);
 });
 
-
 app.get('/onlinewebshop', (req,res)=>{
   const model={
     isLoggedIn: req.session.isLoggedIn,
@@ -269,7 +268,6 @@ app.get('/contact', (req, res) => {
   }
   res.render('contact.handlebars', model);
 });
-
 
 app.get('/login', (req, res) => {
   const model={
@@ -318,7 +316,7 @@ app.post('/login', (req, res) => {
       }
 
       if (result) {
-        console.log(`${user} successfully logged in!`);
+        console.log(`${user} successfully logged in!  with role `, row.role);
         req.session.isAdmin = (row.role==1);
         req.session.isLoggedIn = true;
         req.session.name = user;
@@ -376,9 +374,9 @@ process.on('exit', () => {
 
 
 
-//Step4 create 
+//Step4 CREATE add new projects  
 app.get('/projects', (req, res) => {
-  console.log(`HÄR`)
+  console.log(`project`)
   db.all("SELECT * FROM projects", function (error, theProjects) {
     if (error) {
        // fix err
@@ -395,7 +393,9 @@ app.get('/projects', (req, res) => {
     });
 });
 
-app.get('/projects/delete', (req,res)=>{
+/*
+app.get('/projects/delete/:id', (req,res)=>{
+  console.log(`deletebutton1`)
   if (req.session.isLoggedIn === true && req.session.isAdmin === true) {
     const model={
       isLoggedIn: req.session.isLoggedIn,
@@ -407,21 +407,31 @@ app.get('/projects/delete', (req,res)=>{
     res.redirect('/login')
   }
 });
-//DELETE, can only be preformed by an admin.
-app.delete('/projects/delete', (req, res) => {
-  const newp = [
-    req.body.projectTitle, req.body.projectDescription, req.body.link,
-  ];
+*/  
 
+//DELETE, can only be preformed by an admin.
+app.get('/projects/delete/:id', (req, res) => {
+  const id= req.params.id
   if (req.session.isLoggedIn === true && req.session.isAdmin === true) {
-    db.run("DELETE FROM projects WHERE projectTitle = ? AND projectDescription = ? AND link = ?", [newp[0], newp[1], newp[2]], (error) => {
+    db.run("DELETE FROM projects WHERE projectID = ?", [id], function (error, theProjects) {
       if (error) {
-        console.log("ERROR: ", error);
+        const model = {
+          dbError: true, theError:error,
+          idLoggedIN:req.session.isLoggedIn,
+          name:req.session.name,
+          isAdmin:req.session.isAdmin
+        }
+        res.render('home.handlebars', model)
       } else {
-        console.log("Row deleted from the projects table!");
+        const model = {
+          dbError: false, theError:error,
+          idLoggedIN:req.session.isLoggedIn,
+          name:req.session.name,
+          isAdmin:req.session.isAdmin
+        }
+      res.redirect('home.handlebars',model);
       }
-      res.redirect('/projects');
-    });
+    }) 
   } else {
     res.redirect('/login');
   }
@@ -440,6 +450,7 @@ app.get('/projects/new', (req,res)=>{
   }
 });
 app.post('/projects/new', (req,res )=>{
+  console.log("newproject")
   const newp=[
     req.body.projectTitle, req.body.projectDescription, req.body.link,
   ]
@@ -561,7 +572,6 @@ app.get('/projects1111', (req, res) => {
               description: project.description
             };
           });
-
           const model = {
             projectsData: projectsData,
             isLoggedIn: req.session.isLoggedIn,
