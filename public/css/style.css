@@ -93,20 +93,14 @@ nav ul li a:hover {
 
 /*Login */
 .login-container {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  flex-direction: column;
   background-color: #fff;
   border-radius: 3%;
   box-shadow: 0 14px 28px rgba(0, 0, 0, 0.25),
     0 10px 10px rgba(0, 0, 0, 0.22);
-  position: relative;
-  overflow: hidden;
-  width: 768px;
-  max-width: 100%;
+  max-width: 700px;
   min-height: 600px;
-  left: 20%;
+  margin: 0 auto;
+  text-align: center;
 }
 
 .login-container h3 {
@@ -151,23 +145,33 @@ button:hover {
   position: relative;
   height: 100%;
   text-align: center;
-  display: flex; /* Use flex to create a row of cards */
-  justify-content: center; /* Center the cards horizontally */
+  display: flex; 
+  flex-direction: row;
+  flex-wrap: wrap;
+  justify-content: center; 
 }
 
 .card-container-project {
-  height: 350px;
-  width: 350px;
+  height: 450px;
+  width: 100%;
   border-radius: 8%;
   text-align: center;
-  margin: 10px; /* Adjust the margin to control spacing between cards */
+  margin: 10px;
+  flex: 1;
+  flex-basis: 30%;
   background-color: #fff;
+}
+.card-container-project h4 {
+  font-size: 18px;
 }
 
 .card-header-project {
-  max-width: 320px;
+  max-width: 100%;
   padding-bottom: 1rem;
   border-radius: 0.5em;
+}
+.card-header-project-f {
+  font-size: 16px;
 }
 
 form {
