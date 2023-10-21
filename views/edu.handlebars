@@ -1,0 +1,32 @@
+<div id="main">
+    <div>
+        <h1>My Education</h1>
+        <div class="card-container-p">
+            {{#if dbError}}
+            <div>
+                Problem with the database<br />
+                {{theError}}
+            </div>
+            {{else}}
+            {{#each Education}}
+            <div class="card-container-project">
+                <div class="card-header-project">
+                    <div>{{school}}</div>
+                    <div>{{degree}}</div>
+                    <div>{{degreeDescription}}</div>
+                    <div>{{date}}</div>
+                </div>
+                {{#if ../isAdmin}}
+                <div>
+                  <a href="/edu/modify/{{educationID}}">Modify Education</a>
+                  <a href="/edu/delete/{{educationID}}" id="delete">DELETE Education</a>
+                  </div>
+                  {{/if}}
+            </div>
+            {{/each}}
+            {{/if}}
+        </div>
+    </div>
+</div>
+
+

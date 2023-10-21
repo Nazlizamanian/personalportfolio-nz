@@ -4,7 +4,7 @@
     </div>
     {{#if isLoggedIn}}
     {{#if isAdmin}}
-    <form action="/projects/update{{projects.projectID}}" method="post">
+   <form action="/projects/modify/{{projectID}}" method="post">
         <fieldset>
             <label for="projectTitle"> Project Title:</label>
             <input type="text" class="input-box" name="projectTitle" id="projectTitle" required="required">
@@ -13,9 +13,9 @@
             <input type="text"  class="input-box" name="projectDescription" id="projectDescription" required="required">
             <br />
             <label for="link"> Project Link:</label>
-            <input type="text"  class="input-box" name="link" id="link" required="required">
+            <input type="text"  class="input-box" name="link" id="link">
         </fieldset>
-        <button type="submit" value="Add project">Update</button>
+        <button type="submit" name="modifyp" value="{{projectID}}">Update</button>
     </form>
     {{else }}
     <p>Sorry, must be an admin to modify project!</p>

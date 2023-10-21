@@ -21,26 +21,41 @@ db.run("CREATE TABLE IF NOT EXISTS user (userID INTEGER PRIMARY KEY AUTOINCREMEN
     console.log("Error: ", error);
   } else {
     console.log("----> Table user created!");
-    const users = [
-      { "username": "nazli01", "password": "$2b$10$tfdDufzBWk.QdWYPfaQfXusJC.0Q01QAvScAJidvis7v6oVs18V5q", "role": 1, "email": "zana22za@student.ju.se", "regDate": "2023-09-22" },
-      { "username": "momo22", "password": "$2b$10$3/mG9v4tM/v9SuIMcL4YU.UCEGGLoROTZl3bRbDYL9smt/AvsSseC", "role": 0, "email": "momo@gmail.com", "regDate": "2023-09-23" },
-      { "username": "kevin33", "password": "$2b$10$LaEsn9Z/LP1eroxO.zQvcuj8DHuPCE6eEVTc2x1JXpVWNeImS2522", "role": 0, "email": "kevin@gmail.com", "regDate": "2023-09-24" },
-      { "username": "lilly2434", "password": "$2b$10$xGuqChdNm405Llf/IFDjT.JPW6ixpvuAg4w18C9qZCENVP04EG2jq", "role": 0, "email": "lillyke@gmail.com", "regDate": "2023-09-25" },
-      { "username": "Taylor2378", "password": "$2b$10$UQIgf2LEpnJ3G1jpPgTmMeSk3R7Lj8Zl28x/3sYXhWgTgtkwEm8Wm", "role": 0, "email": "taylor@example.com", "regDate": "2023-09-29" }
-    ];
 
-    users.forEach((userData) => {
-      db.run("INSERT OR IGNORE INTO user (username, password, role, email, regDate) VALUES (?, ?, ?, ?, ?)",
-        [userData.username, userData.password, userData.role, userData.email, userData.regDate], (error) => {
-          if (error) {
-            console.log("Error: ", error);
-          } else {
-            console.log("Line added into user table!");
-          }
+    // Use a flag to prevent duplicate insertions
+    let insertedUsers = false;
+
+    // Check if user data has been inserted before
+    db.get("SELECT 1 FROM user LIMIT 1", (selectError, row) => {
+      if (!selectError && row) {
+        insertedUsers = true;
+      }
+
+      // Insert user data if it hasn't been inserted before
+      if (!insertedUsers) {
+        const users = [
+          { "username": "nazli01", "password": "$2b$10$tfdDufzBWk.QdWYPfaQfXusJC.0Q01QAvScAJidvis7v6oVs18V5q", "role": 1, "email": "zana22za@student.ju.se", "regDate": "2023-09-22" },
+          { "username": "momo22", "password": "$2b$10$3/mG9v4tM/v9SuIMcL4YU.UCEGGLoROTZl3bRbDYL9smt/AvsSseC", "role": 0, "email": "momo@gmail.com", "regDate": "2023-09-23" },
+          { "username": "kevin33", "password": "$2b$10$LaEsn9Z/LP1eroxO.zQvcuj8DHuPCE6eEVTc2x1JXpVWNeImS2522", "role": 0, "email": "kevin@gmail.com", "regDate": "2023-09-24" },
+          { "username": "lilly2434", "password": "$2b$10$xGuqChdNm405Llf/IFDjT.JPW6ixpvuAg4w18C9qZCENVP04EG2jq", "role": 0, "email": "lillyke@gmail.com", "regDate": "2023-09-25" },
+          { "username": "Taylor2378", "password": "$2b$10$UQIgf2LEpnJ3G1jpPgTmMeSk3R7Lj8Zl28x/3sYXhWgTgtkwEm8Wm", "role": 0, "email": "taylor@example.com", "regDate": "2023-09-29" }
+        ];
+
+        users.forEach((userData) => {
+          db.run("INSERT OR IGNORE INTO user (username, password, role, email, regDate) VALUES (?, ?, ?, ?, ?)",
+            [userData.username, userData.password, userData.role, userData.email, userData.regDate], (error) => {
+              if (error) {
+                console.log("Error: ", error);
+              } else {
+                console.log("Line added into user table!");
+              }
+            });
         });
+      }
     });
   }
 });
+
 
 // CREATE Table Education and inserting values.
 db.run("CREATE TABLE IF NOT EXISTS education (educationID INTEGER PRIMARY KEY AUTOINCREMENT, userID INTEGER REFERENCES user(userID) ON DELETE CASCADE ON UPDATE CASCADE, school TEXT NOT NULL, degree TEXT NOT NULL, degreeDescription TEXT, date DATE)", (error) => {
@@ -83,47 +98,8 @@ db.run("CREATE TABLE IF NOT EXISTS education (educationID INTEGER PRIMARY KEY AU
   }
 });
 
-// CREATE Table Experience and inserting values.
-db.run("CREATE TABLE IF NOT EXISTS experience (experienceID INTEGER PRIMARY KEY AUTOINCREMENT, userID INTEGER REFERENCES user(userID) ON DELETE CASCADE ON UPDATE CASCADE, jobTitle TEXT NOT NULL, company TEXT, jobDescription TEXT, date DATE, location TEXT)", (error) => {
-  if (error) {
-    console.log("Error: ", error);
-  } else {
-    console.log("----> Table experience created!");
-
-    // Use a flag to prevent duplicate insertions
-    let insertedExperience = false;
-
-    // Check if experience data has been inserted before
-    db.get("SELECT 1 FROM experience LIMIT 1", (selectError, row) => {
-      if (!selectError && row) {
-        insertedExperience = true;
-      }
-
-      // Insert experience data if it hasn't been inserted before
-      if (!insertedExperience) {
-        const experiences = [
-          { "experienceID": 1, "userID": 1, "jobTitle": "Assistant Floor Manager", "company": "O'Learys Mall Of Scandinavia", "jobDescription": "Responsibilities consisted of arranging the resturants events, serving food and beverages, managing pentathlons and other games activities. Responsible for smaller sections of the departments including the bar and event organizer (3-& 5 battles, bachelor’s and children’s parties). Managed administrative functions for the day, served as the primary liaison between customers and employees, utilizing the best judgment in tandem with the restaurant's standards to resolve conflict that might have arisen. Maintained and executed routine site sanitation, supervising, and more.", "date": "April 2016 - January 2020", "location": "Stockholm, Sweden" },
-          { "experienceID": 2, "userID": 1, "jobTitle": "Caretaker", "company": "Solom AB", "jobDescription": "Caretaker at a special needs group home residence, providing assistance and support to residents.", "date": "January 2020 – August 2020", "location": "Stockholm, Sweden" },
-          { "experienceID": 3, "userID": 1, "jobTitle": "Salesman", "company": "OKQ8", "jobDescription": "Salesman at a gas service station. Varying job tasks from cleaning, taking care of customers. Additionally, car rental services and taking care of the different vehicles and trailers.", "date": "2023-09-30", "location": "Stockholm, Sweden" }
-        ];
-
-        experiences.forEach((expData) => {
-          db.run("INSERT INTO experience (experienceID, userID, jobTitle, company, jobDescription, date, location) VALUES (?, ?, ?, ?, ?, ?, ?)",
-            [expData.experienceID, expData.userID, expData.jobTitle, expData.company, expData.jobDescription, expData.date, expData.location], (error) => {
-              if (error) {
-                console.log("Error: ", error);
-              } else {
-                console.log("Line added into experience table!");
-              }
-            });
-        });
-      }
-    });
-  }
-});
-
 // CREATE Table Projects and inserting values.
-db.run("CREATE TABLE IF NOT EXISTS projects (projectID INTEGER PRIMARY KEY AUTOINCREMENT, userID INTEGER REFERENCES user(userID) ON DELETE CASCADE ON UPDATE CASCADE, projectTitle TEXT NOT NULL, projectDescription TEXT, link TEXT)", (error) => {
+db.run("CREATE TABLE IF NOT EXISTS projects (projectID INTEGER PRIMARY KEY AUTOINCREMENT, userID INTEGER REFERENCES user(userID) ON DELETE CASCADE ON UPDATE CASCADE, projectTitle TEXT NOT NULL, projectDescription TEXT, projectYear TEXT)", (error) => {
   if (error) {
     console.log("Error: ", error);
   } else {
@@ -141,14 +117,16 @@ db.run("CREATE TABLE IF NOT EXISTS projects (projectID INTEGER PRIMARY KEY AUTOI
       // Insert projects data if it hasn't been inserted before
       if (!insertedProjects) {
         const projects = [
-          { "projectID": 1, "userID": 1, "projectTitle": "Online Web Shop SQL", "projectDescription": "Online Web Shop created with SQL queries and ER diagram with both conceptual and logical diagrams that have been normalized to 3NF.", "link": "https://github.com/Nazlizamanian/OnlineWebShopDatabaseSQL" },
-          { "projectID": 2, "userID": 1, "projectTitle": "Bank system", "projectDescription": "Simple bank program that resembles the nature and primary functions of an ATM machine and fulfills the tasks one can expect to be done at a visit to the bank.", "link": "https://github.com/Nazlizamanian/LIA" },
-          { "projectID": 3, "userID": 1, "projectTitle": "BlackJack Game", "projectDescription": "Small blackjack game also known as 21 created in C++", "link": "-" },
+          { "projectID": 1, "userID": 1, "projectTitle": "Online Web Shop SQL", "projectDescription": "Online Web Shop created with SQL queries and ER diagram with both conceptual and logical diagrams that have been normalized to 3NF.", "projectYear": "2023" },
+          { "projectID": 2, "userID": 1, "projectTitle": "Bank system", "projectDescription": "Simple bank program that resembles the nature and primary functions of an ATM machine and fulfills the tasks one can expect to be done at a visit to the bank.", "projectYear": "2022" },
+          { "projectID": 3, "userID": 1, "projectTitle": "BlackJack Game", "projectDescription": "Small blackjack game also known as 21 created in C++", "projectYear": "2023" },
+          { "projectID": 4, "userID": 1, "projectTitle": "Correlation between substance abuse & neurological disease; Opioids and Alzheimer’s Disease", "projectDescription": "Small blackjack game also known as 21 created in C++", "projectYear": "2020" },
+          { "projectID": 5, "userID": 1, "projectTitle": "BlackJack Game", "projectDescription": "Small blackjack game also known as 21 created in C++", "projectYear": "2023" },
         ];
 
         projects.forEach((projectData) => {
-          db.run("INSERT INTO projects (projectID, userID, projectTitle, projectDescription, link) VALUES (?, ?, ?, ?, ?)",
-            [projectData.projectID, projectData.userID, projectData.projectTitle, projectData.projectDescription, projectData.link], (error) => {
+          db.run("INSERT INTO projects (projectID, userID, projectTitle, projectDescription, projectYear) VALUES (?, ?, ?, ?, ?)",
+            [projectData.projectID, projectData.userID, projectData.projectTitle, projectData.projectDescription, projectData.projectYear], (error) => {
               if (error) {
                 console.log("Error: ", error);
               } else {
@@ -160,8 +138,6 @@ db.run("CREATE TABLE IF NOT EXISTS projects (projectID INTEGER PRIMARY KEY AUTOI
     });
   }
 });
-
-
 
 //GET READ on table Education
 app.get('/education',(req,res)=>{
@@ -288,6 +264,17 @@ app.get('/contact', (req, res) => {
   res.render('contact.handlebars', model);
 });
 
+
+// app.get('/edu', (req, res) => {
+//   const model={
+//     isLoggedIn: req.session.isLoggedIn,
+//     name: req.session.name,
+//     isAdmin: req.session.isAdmin
+//   }
+//   res.render('edu.handlebars', model);
+// });
+
+
 app.get('/login', (req, res) => {
   const model={
     isLoggedIn: req.session.isLoggedIn,
@@ -392,6 +379,26 @@ process.on('exit', () => {
   db.close();
 });
 
+app.get('/edu', (req, res) => {
+  console.log(`edu`)
+  db.all("SELECT * FROM Education", function (error, theEducation) {
+    if (error) {
+       console.log("Database querie error", error);
+       res.status(500).send("Internal Server Error");
+    } else {
+        console.log(theEducation);
+        const model = {
+          Education: theEducation,
+          isLoggedIn: req.session.isLoggedIn,
+          name: req.session.name,
+          isAdmin: req.session.isAdmin,
+        }
+        res.render("edu.handlebars", model); 
+      } 
+    });
+});
+
+
 
 
 //Step4 CREATE add new projects  
@@ -441,6 +448,23 @@ app.get('/projects/delete/:id', (req, res) => {
   }
 });
 
+app.get('/projects-more/:id', (req, res) => {
+  const id= req.params.id
+  db.run("SELECT * FROM projects WHERE projectID = ?", [id], function (error, theProjects) {
+    if (error) {
+    } else {
+      console.log(theProjects);
+      const model = {
+        projects: theProjects,
+        isLoggedIn: req.session.isLoggedIn,
+        name: req.session.name,
+        isAdmin: req.session.isAdmin,
+      }
+      res.render("projects-more.handlebars", model); 
+    }
+  }) 
+});
+
 //NEW ADD project
 app.get('/projects/new', (req,res)=>{
   if (req.session.isLoggedIn === true && req.session.isAdmin === true) {
@@ -449,6 +473,7 @@ app.get('/projects/new', (req,res)=>{
       name: req.session.name,
       isAdmin: req.session.isAdmin,
     }
+
     res.render('newproject.handlebars', model)
   } else{
     res.redirect('/login')
@@ -457,11 +482,11 @@ app.get('/projects/new', (req,res)=>{
 app.post('/projects/new', (req,res )=>{
   console.log("newproject")
   const newp=[
-    req.body.projectID,req.body.projectTitle, req.body.projectDescription, req.body.link,
+    req.body.projectID,req.body.projectTitle, req.body.projectDescription, req.body.projectYear,
     req.body.userID
   ]
   if(req.session.isLoggedIn==true && req.session.isAdmin==true){
-    db.run("INSERT INTO projects (projectID,projectTitle, projectDescription, link) VALUES (?,?,?,?)", newp, (error)=>{
+    db.run("INSERT INTO projects (projectID,projectTitle, projectDescription, projectYear) VALUES (?,?,?,?)", newp, (error)=>{
       if(error){
         console.log("ERROR: ", error)
       } else{
@@ -475,90 +500,45 @@ app.post('/projects/new', (req,res )=>{
 });
 
 //Modify project
-app.get('/projects/update', (req,res)=>{
+app.get('/projects/modify/:id', (req,res)=>{
+  console.log(req.params.id);
   if (req.session.isLoggedIn === true && req.session.isAdmin === true) {
     const model={
       isLoggedIn: req.session.isLoggedIn,
       name: req.session.name,
       isAdmin: req.session.isAdmin,
+      projectID: req.params.id
     }
     res.render('modifyproject.handlebars', model)
   } else{
     res.redirect('/login')
   }
 });
+app.post('/projects/modify/:id', (req, res) => {
+  console.log("modifyproject");
+  const mop = [
+    req.body.projectTitle, req.body.projectDescription, req.body.projectYear, req.body.modifyp
+  ];
+  console.log(req.body.projectTitle);
+  console.log(req.body.projectDescription);
+  console.log(req.body.projectYear);
+  console.log(req.body.modifyp);
 
-app.get('/projects/update/:projectID', (req, res) => {
-  const id = req.params.id;
   if (req.session.isLoggedIn === true && req.session.isAdmin === true) {
-    // Define the new values for the project's attributes (e.g., name and description)
-    const newName = 'New Project Name';
-    const newDescription = 'New Project Description';
-
-    // Use an UPDATE query to update the project
-    db.run(
-      "UPDATE projects SET projectTitle = ?, projectDescription = ? WHERE projectID = ?",
-      [newName, newDescription, id],
-      function (error, result) {
-        if (error) {
-          const model = {
-            dbError: true,
-            theError: error,
-            idLoggedIn: req.session.isLoggedIn,
-            name: req.session.name,
-            isAdmin: req.session.isAdmin
-          }
-          res.render('home.handlebars', model);
-        } else {
-          const model = {
-            dbError: false,
-            theError: error,
-            idLoggedIn: req.session.isLoggedIn,
-            name: req.session.name,
-            isAdmin: req.session.isAdmin
-          }
-          res.redirect('/');
-        }
+    db.run("UPDATE projects SET projectTitle = ?, projectDescription = ?, projectYear = ? WHERE projectID = ?",[req.body.projectTitle, req.body.projectDescription, req.body.link, req.body.modifyp], (error) => {
+      console.log("momo");
+      if (error) {
+        console.log("ERROR: ", error);
+      } else {
+        console.log("Project updated in the projects table!");
+        res.redirect('/projects');
       }
-    );
+    });
   } else {
     res.redirect('/login');
   }
 });
 
-/*
-app.get('/projects/update/:projectID', (req, res) => {
-  const id = req.params.projectID;
-  db.get("SELECT * FROM projects WHERE projectID=?", [id], function (error, theProject) {
-    if (error) {
-      console.log("Error: ", error);
-      const model = {
-        dbError: true,
-        theError: error,
-        project: {},
-        isLoggedIn: req.session.isLoggedIn,
-        name: req.session.name,
-        isAdmin: req.session.isAdmin,
-      };
-      res.render("modifyproject.handlebars", model);
-    } else {
-      const model = {
-        dbError: false,
-        theError: "",
-        project: theProject,
-        isLoggedIn: req.session.isLoggedIn,
-        name: req.session.name,
-        isAdmin: req.session.isAdmin,
-        helpers: {
-          theTypeR(value) { return value === "Education";},
-          theTypeT(value) {return value === "Other";},
-        },
-      };
-      res.render("modifyproject.handlebars", model);
-    }
-  });
-});
-*/
 
 app.get('/projects1111', (req, res) => {
   // Check if projectsData already exists in the database
@@ -633,8 +613,56 @@ app.get('/projects1111', (req, res) => {
 
 
 
+app.get('/education', (req, res) => {
+  db.get("SELECT * FROM education WHERE educationID=?", [id], function (error, TheEducation) {
+    console.log("edu")
+      if (error) {
+        console.log("SESSION: ", req.session)
+          const model = {
+              dbError: true,
+              theError: error,
+              Education: [],
+              isLoggedIn:req.session.isLoggedIn,
+              name:req.session.name,
+              isAdmin:req.session.isAdmin,
+          }
+          // renders the page with the model
+          res.render("education.handlebars", model)
+      }
+      else {
+          const model = {
+              dbError: false,
+              theError: "",
+              Education: TheEducation,
+              isLoggedIn: req.session.isLoggedIn,
+              name: req.session.name,
+              isAdmin: req.session.isAdmin,
+          }
+          // renders the page with the model
+          res.render("education.handlebars", model)
+      }
+    })
+});
+/*
+app.get('/education', (req, res) => {
+  console.log(`edu`)
+  db.all("SELECT * FROM education", function (error, theProjects) {
+    if (error) {
+       // fix err
+    } else {
+        console.log(theProjects);
+        const model = {
+          projects: theProjects,
+          isLoggedIn: req.session.isLoggedIn,
+          name: req.session.name,
+          isAdmin: req.session.isAdmin,
+        }
+        res.render("education.handlebars", model); 
+      } 
+    });
+});
 
-
+*/
 
 
 /*

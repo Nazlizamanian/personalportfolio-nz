@@ -6,7 +6,6 @@
             <a href="/projects/new">New Project</a>     
         </div>
         {{/if}}
-
         <div class="card-container-p">
             {{#if dbError}}
             <div>
@@ -19,12 +18,13 @@
                 <div class="card-header-project">
                     <div>{{projectTitle}}</div>
                     <div>{{projectDescription}}</div>
-                    <div>{{link}}</div>
+                    <div>{{projectYear}}</div>
                 </div>
                 {{#if ../isAdmin}}
                 <div>
-                  <a href="/projects/update">Modify Project</a>
+                  <a href="/projects/modify/{{projectID}}">Modify Project</a>
                   <a href="/projects/delete/{{projectID}}" id="delete">DELETE Project</a>
+                  <a href="/onlinewebshop"> Learn More</a>
                   </div>
                   {{/if}}
             </div>
