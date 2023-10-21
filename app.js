@@ -404,7 +404,7 @@ app.get('/edu', (req, res) => {
 //Step4 CREATE add new projects  
 app.get('/projects', (req, res) => {
   console.log(`project`)
-  db.all("SELECT * FROM projects", function (error, theProjects) {
+  db.all("SELECT projectTitle, projectYear, projectID FROM projects", function (error, theProjects) {
     if (error) {
        // fix err
     } else {
@@ -450,16 +450,16 @@ app.get('/projects/delete/:id', (req, res) => {
 
 app.get('/projects-more/:id', (req, res) => {
   const id= req.params.id
-  db.run("SELECT * FROM projects WHERE projectID = ?", [id], function (error, theProjects) {
+  db.get("SELECT * FROM projects WHERE projectID=?", [id], function (error, theProjects) {
     if (error) {
     } else {
-      console.log(theProjects);
       const model = {
-        projects: theProjects,
+        project: theProjects,
         isLoggedIn: req.session.isLoggedIn,
         name: req.session.name,
         isAdmin: req.session.isAdmin,
       }
+      console.log(model)
       res.render("projects-more.handlebars", model); 
     }
   }) 

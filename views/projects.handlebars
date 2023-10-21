@@ -17,14 +17,14 @@
             <div class="card-container-project">
                 <div class="card-header-project">
                     <div>{{projectTitle}}</div>
-                    <div>{{projectDescription}}</div>
+                    {{!-- <div>{{projectDescription}}</div> --}}
                     <div>{{projectYear}}</div>
                 </div>
                 {{#if ../isAdmin}}
                 <div>
                   <a href="/projects/modify/{{projectID}}">Modify Project</a>
                   <a href="/projects/delete/{{projectID}}" id="delete">DELETE Project</a>
-                  <a href="/onlinewebshop"> Learn More</a>
+                  <a href="/projects-more/{{projectID}}"> Learn More</a>
                   </div>
                   {{/if}}
             </div>
