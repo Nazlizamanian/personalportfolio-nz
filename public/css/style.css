@@ -107,6 +107,9 @@ nav ul li a:hover {
   margin-bottom: 10px;
   padding-top: 30px;
 }
+.login-container p{
+  padding-left: 60px;
+}
 
 a {
   color: #333;
@@ -172,6 +175,11 @@ button:hover {
 }
 .card-header-project-f {
   font-size: 16px;
+  padding: 7px;
+  line-height: 1.3em;
+}
+.card-header-project-h{
+  margin: 10px;
 }
 
 form {

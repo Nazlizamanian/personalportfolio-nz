@@ -18,13 +18,13 @@
                 <div class="card-header-project">
                     <h4>{{projectTitle}}</h4>
                     {{!-- <div>{{projectDescription}}</div> --}}
-                    <div>{{projectYear}}</div>
+                    <div class="card-header-project-f">{{projectYear}}</div>
+                     <a href="/projects-more/{{projectID}}"> Learn More</a>
                 </div>
                 {{#if ../isAdmin}}
                 <div>
                   <a href="/projects/modify/{{projectID}}">Modify Project</a>
                   <a href="/projects/delete/{{projectID}}" id="delete">DELETE Project</a>
-                  <a href="/projects-more/{{projectID}}"> Learn More</a>
                   </div>
                   {{/if}}
             </div>

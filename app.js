@@ -4,7 +4,6 @@ const sqlite3 = require('sqlite3').verbose();
 const bodyParser= require('body-parser')
 const session = require('express-session');
 const connect = require('connect-sqlite3'); 
-//const cookieParser = require('cookie-parser')
 const connectSqlite3 = require('connect-sqlite3');
 const { LIMIT_EXPR_DEPTH } = require('sqlite3');
 const bcrypt = require("bcrypt")
@@ -15,14 +14,14 @@ const port = 8080
 //connected to the database located in the model folder.
 const db = new sqlite3.Database('model/portfolio.db');
 
-// CREATE Table User and inserting values.
+//----------------------------------------CREATE Table User and inserting values ----------------------------------------
 db.run("CREATE TABLE IF NOT EXISTS user (userID INTEGER PRIMARY KEY AUTOINCREMENT, username TEXT NOT NULL, password TEXT NOT NULL, role INTEGER, email TEXT, regDate DATE)", (error) => {
   if (error) {
     console.log("Error: ", error);
   } else {
     console.log("----> Table user created!");
 
-    // Use a flag to prevent duplicate insertions
+    //Flag to prevent duplicate insertions
     let insertedUsers = false;
 
     // Check if user data has been inserted before
@@ -57,14 +56,14 @@ db.run("CREATE TABLE IF NOT EXISTS user (userID INTEGER PRIMARY KEY AUTOINCREMEN
 });
 
 
-// CREATE Table Education and inserting values.
+//----------------------------------------CREATE Table Education and inserting values ----------------------------------------
 db.run("CREATE TABLE IF NOT EXISTS education (educationID INTEGER PRIMARY KEY AUTOINCREMENT, userID INTEGER REFERENCES user(userID) ON DELETE CASCADE ON UPDATE CASCADE, school TEXT NOT NULL, degree TEXT NOT NULL, degreeDescription TEXT, date DATE)", (error) => {
   if (error) {
     console.log("Error: ", error);
   } else {
     console.log("----> Table education created!");
 
-    // Use a flag to prevent duplicate insertions
+    //Flag to prevent duplicate insertions
     let insertedEducation = false;
 
     // Check if education data has been inserted before
@@ -76,11 +75,11 @@ db.run("CREATE TABLE IF NOT EXISTS education (educationID INTEGER PRIMARY KEY AU
       // Insert education data if it hasn't been inserted before
       if (!insertedEducation) {
         const education = [
-          { "userID": 1, "school": "Trollbodaskolan", "degree": "Middle school", "degreeDescription": "-", "date": "2007-2017" },
+          { "userID": 1, "school": "Trollbodaskolan", "degree": "Middle school", "degreeDescription": "Middle school degree", "date": "2007-2017" },
           { "userID": 1, "school": "Internationella Engelska Gymnaiset Södermalm (IEGS)", "degree": "High school degree in natural science program with specialization in social science", "degreeDescription": "The program mainly focuses on research, analysis, and communication skills in the context of natural sciences and mathematics and interdisciplinary connections. It introduces core concepts, promotes scientific method awareness, improves language proficiency for scientific communication, fosters the integration of scientific elements, and encourages coherent knowledge integration in fields such as biology, chemistry, physics. Additionally, the program puts a significant emphasis on social science as well.", "date": "2017-2020" },
           { "userID": 1, "school": "EC Education Yrkeshögskola", "degree": "Programming 1 course.", "degreeDescription": "Programming 1 course in C.", "date": "2020" },
           { "userID": 1, "school": "EC Education Yrkeshögskola", "degree": "Vocational Higher Educational Degree", "degreeDescription": "Software development with a specialization in Industrial Internet Of Things (IoT).", "date": "2020-2022" },
-          { "userID": 1, "school": "Jönköping University", "degree": "Degree of Bachelor of Science in Computer Engineering with specialization in Software Engineering and Mobile Platforms", "degreeDescription": "The education is largely based on projects and exercises that provide practical experience in the techniques being taught. The program focuses on understanding how computers work and the structure of computer networks. In the early stages of the program, the focus lies on understanding the basic fundamentals of computer science and mathematics. Following that, the program will dive deeper into mobile device development, web development, computer networks, and systems. The program includes learning in C and its derivatives such as C++, SQL database management systems, algorithms and data structures, object-oriented programming principles, computer networking concepts, Windows operating systems, as well as web technologies like HTML, CSS, and JavaScript.", "date": "2023-09-28" }
+          { "userID": 1, "school": "Jönköping University", "degree": "Degree of Bachelor of Science in Computer Engineering with specialization in Software Engineering and Mobile Platforms", "degreeDescription": "The education is based on projects and exercises that provide practical experience. The focus lies on understanding the fundamentals of computer science and mathematics. The program dives deeper into mobile development, web development, computer networks, and systems. The program includes learning in C++ and SQL database management systems, algorithms and data structures, object-oriented programming principles, computer networks, Windows operating systems, as well as web technologies.", "date": "2022-2025" }
         ];
 
         education.forEach((eduData) => {
@@ -98,14 +97,14 @@ db.run("CREATE TABLE IF NOT EXISTS education (educationID INTEGER PRIMARY KEY AU
   }
 });
 
-// CREATE Table Projects and inserting values.
+//----------------------------------------CREATE Table Projects and inserting values ----------------------------------------
 db.run("CREATE TABLE IF NOT EXISTS projects (projectID INTEGER PRIMARY KEY AUTOINCREMENT, userID INTEGER REFERENCES user(userID) ON DELETE CASCADE ON UPDATE CASCADE, projectTitle TEXT NOT NULL, projectDescription TEXT, projectYear TEXT)", (error) => {
   if (error) {
     console.log("Error: ", error);
   } else {
     console.log("----> Table projects created!");
 
-    // Use a flag to prevent duplicate insertions
+    // Flag used to prevent duplicate insertions
     let insertedProjects = false;
 
     // Check if projects data has been inserted before
@@ -119,9 +118,9 @@ db.run("CREATE TABLE IF NOT EXISTS projects (projectID INTEGER PRIMARY KEY AUTOI
         const projects = [
           { "projectID": 1, "userID": 1, "projectTitle": "Online Web Shop SQL", "projectDescription": "Online Web Shop created with SQL queries and ER diagram with both conceptual and logical diagrams that have been normalized to 3NF.", "projectYear": "2023" },
           { "projectID": 2, "userID": 1, "projectTitle": "Bank system", "projectDescription": "Simple bank program that resembles the nature and primary functions of an ATM machine and fulfills the tasks one can expect to be done at a visit to the bank.", "projectYear": "2022" },
-          { "projectID": 3, "userID": 1, "projectTitle": "BlackJack Game", "projectDescription": "Small blackjack game also known as 21 created in C++", "projectYear": "2023" },
-          { "projectID": 4, "userID": 1, "projectTitle": "Correlation between substance abuse & neurological disease; Opioids and Alzheimer’s Disease", "projectDescription": "Small blackjack game also known as 21 created in C++", "projectYear": "2020" },
-          { "projectID": 5, "userID": 1, "projectTitle": "BlackJack Game", "projectDescription": "Small blackjack game also known as 21 created in C++", "projectYear": "2023" },
+          { "projectID": 3, "userID": 1, "projectTitle": "BlackJack Game", "projectDescription": "Small application in the language C++ of the classical game 21 Blackjackis. Players are invited to test their card skills and strategic thinking in a simplified yet entertaining digital environment. With a user-friendly interface and easy-to-follow rules, this C++ game promises an enjoyable gaming experience for all ages. Get ready to hit, stand, and challenge your luck in the pursuit of the elusive 21!", "projectYear": "2023" },
+          { "projectID": 4, "userID": 1, "projectTitle": "Correlation between substance abuse & neurological disease; Opioids and Alzheimer’s Disease", "projectDescription": "GYAR project that studies the opioid epidemic and its effects to the human brain. Investigating into the intricate neurological damage caused by opioid abuse, with a particular emphasis on the hippocampus and its role in memory function. Additionally exploring the potential connection and likleyhood of  opioid abuse and developing Alzheimer's disease later in life.", "projectYear": "2020" },
+          { "projectID": 5, "userID": 1, "projectTitle": "Ceasar Cipher Encryption ", "projectDescription": "A program written in Java, performs Caesar Cipher encryption. It takes an input text and a numerical encryption key. By using these two components, it encrypts and decrypts messages. The encryption key can also be a negative integer, allowing for both encryption and decryption of messages. It's a simple yet effective tool for encoding and decoding secret messages.", "projectYear": "2023" },
         ];
 
         projects.forEach((projectData) => {
@@ -139,19 +138,8 @@ db.run("CREATE TABLE IF NOT EXISTS projects (projectID INTEGER PRIMARY KEY AUTOI
   }
 });
 
-//GET READ on table Education
-app.get('/education',(req,res)=>{
-  db.all("SELECT * FROM education", (err, rows)=>{
-    if(err){
-      res.status(500).send('International server error');
-    }
-    else {
-      res.json(rows);
-    }
-  });
-});
 
-//UPDATE
+//----------------------------------------UPDATE CRUD Project ----------------------------------------
 app.put('/users/:userID', (req, res) => {
   if (req.user && req.user.role === 1) {
     const id = req.params.userID; 
@@ -204,7 +192,7 @@ app.use((req, res, next) => {
     next()
 })
 
-//Post forms 
+////----------------------------------------Post forms ----------------------------------------
 app.use(bodyParser.urlencoded({extended: false}))
 app.use(bodyParser.json())
 
@@ -218,7 +206,7 @@ app.use(session({
   secret:"61Om318808"
 }));
 
-//Routes
+////----------------------------------------Routes ----------------------------------------
 app.get('/', (req, res) => {
   const model={
     isLoggedIn: req.session.isLoggedIn,
@@ -265,16 +253,6 @@ app.get('/contact', (req, res) => {
 });
 
 
-// app.get('/edu', (req, res) => {
-//   const model={
-//     isLoggedIn: req.session.isLoggedIn,
-//     name: req.session.name,
-//     isAdmin: req.session.isAdmin
-//   }
-//   res.render('edu.handlebars', model);
-// });
-
-
 app.get('/login', (req, res) => {
   const model={
     isLoggedIn: req.session.isLoggedIn,
@@ -284,7 +262,7 @@ app.get('/login', (req, res) => {
   res.render('login.handlebars', model);
 });
 
-//Log In 
+//----------------------------------------Log In ----------------------------------------
 async function comparePasswords(plainTextPassword, hashedPassword) {
   try {
       if (!plainTextPassword || !hashedPassword) {
@@ -302,7 +280,7 @@ app.post('/login', (req, res) => {
   const user = req.body.user;
   const plainTextPassword = req.body.pw;
 
-  // Retrieve the hashed password from your database based on the username
+  // Retrieves the hashed password from the database based on the username.
   const sql = 'SELECT username, password, role FROM user WHERE username = ?';
  
   db.get(sql, [user], async (err, row) => {
@@ -314,7 +292,7 @@ app.post('/login', (req, res) => {
     if (row) {
       const hashedPasswordFromDatabase = row.password;
       const [result,compareErr]= await comparePasswords(plainTextPassword,hashedPasswordFromDatabase)
-      // Compare the hashed password with the provided plain text password
+      // Compares the hashed password with the provided plain text password. 
     
       if (compareErr) {
         console.error(compareErr);
@@ -346,6 +324,15 @@ app.post('/login', (req, res) => {
   });
 });
 
+app.get('/logout', (req,res)=>{
+  req.session.destroy((err)=>{
+    console.log("Error")
+  })
+  console.log('Logged out..')
+  res.redirect('/')
+});
+
+//----------------------------------------Session----------------------------------------
 app.get('/', (req, res) => {
   console.log("Session: ", req.session)
   const model = {
@@ -356,15 +343,7 @@ app.get('/', (req, res) => {
   res.render('home.handlebars', model);
 });
 
-app.get('/logout', (req,res)=>{
-  req.session.destroy((err)=>{
-    console.log("Error")
-  })
-  console.log('Logged out..')
-  res.redirect('/')
-});
-
-
+//----------------------------------------Test the database connection----------------------------------------
 db.serialize(function() {
   // Test the database connection
   db.all("SELECT 1", function(error, result) {
@@ -399,14 +378,12 @@ app.get('/edu', (req, res) => {
 });
 
 
-
-
 //Step4 CREATE add new projects  
 app.get('/projects', (req, res) => {
   console.log(`project`)
   db.all("SELECT projectTitle, projectYear, projectID FROM projects", function (error, theProjects) {
     if (error) {
-       // fix err
+      res.status(500).send("Internal Server Error");
     } else {
         console.log(theProjects);
         const model = {
@@ -420,7 +397,8 @@ app.get('/projects', (req, res) => {
     });
 });
 
-//DELETE, can only be preformed by an admin.
+//----------------------------------------DELETE CRUD Project----------------------------------------
+//can only be preformed by an admin.
 app.get('/projects/delete/:id', (req, res) => {
   const id= req.params.id
   if (req.session.isLoggedIn === true && req.session.isAdmin === true) {
@@ -465,7 +443,7 @@ app.get('/projects-more/:id', (req, res) => {
   }) 
 });
 
-//NEW ADD project
+//---------------------------------------- ADD NEW (CREATE) Project----------------------------------------
 app.get('/projects/new', (req,res)=>{
   if (req.session.isLoggedIn === true && req.session.isAdmin === true) {
     const model={
@@ -499,7 +477,7 @@ app.post('/projects/new', (req,res )=>{
   }
 });
 
-//Modify project
+//----------------------------------------Modify project----------------------------------------
 app.get('/projects/modify/:id', (req,res)=>{
   console.log(req.params.id);
   if (req.session.isLoggedIn === true && req.session.isAdmin === true) {
@@ -612,7 +590,7 @@ app.get('/projects1111', (req, res) => {
 });
 
 
-
+//----------------------------------------Education----------------------------------------
 app.get('/education', (req, res) => {
   db.get("SELECT * FROM education WHERE educationID=?", [id], function (error, TheEducation) {
     console.log("edu")
@@ -663,58 +641,6 @@ app.get('/education', (req, res) => {
 });
 
 */
-
-
-/*
-
-//All CRUD uperations one 1 table: User. 
-//CREATE
-app.post('/users', (req, res) => {
-  const { username, password, role, email, regDate } = req.body;
-  // Check if the username exists
-  db.get('SELECT userID FROM user WHERE username = ?', [username], (error, existingUser) => {
-      if (error) {
-          console.log('Error: ', error);
-          res.status(500).json({ error: 'Server error' });
-      } else if (existingUser) {
-          res.status(400).json({ error: 'Username already exists' });
-      } else {
-          // Insert the user if the username is unique
-          db.run(
-              'INSERT INTO user (username, password, role, email, regDate) VALUES (?, ?, ?, ?, ?)',
-              [username, password, role, email, regDate],
-              (insertError) => {
-                  if (insertError) {
-                      console.log('Error: ', insertError);
-                      res.status(500).json({ error: 'Failed to create user' });
-                  } else {
-                      res.status(201).json({ message: 'User created successfully' });
-                  }
-              }
-          );
-      }
-  });
-});
-
-
-// view all users who are not admin, role=0.
-app.get('/user', (req, res) => {
-  db.all("SELECT * FROM user WHERE role = 0", (err, users) => {
-      const model = {
-          dbError: false,
-          theError: "",
-          users: users
-      };
-
-      if (err) {
-          model.dbError = true;
-          model.theError = err;
-      } else if (users.length === 0) {
-          model.theError = "No users were found";
-      }
-      res.render("user.handlebars", model);
-  });
-});*/
 
 // run the server and make it listen to the port
 app.listen(port, () => {
