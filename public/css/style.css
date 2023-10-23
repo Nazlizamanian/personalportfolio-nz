@@ -518,7 +518,7 @@ a {
   left: 83px;
 }
 
-/* Add arrows to the right container (pointing left) */
+/* Arrows to the right container (pointing left) */
 .right::before {
   content: " ";
   height: 0;
@@ -541,7 +541,7 @@ a {
   position: relative;
   border-radius: 10px;
 }
-
+/*testing
 /* Footer styles */
 footer {
   background-color: rgb(255, 192, 203);

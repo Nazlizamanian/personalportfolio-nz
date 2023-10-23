@@ -139,28 +139,6 @@ db.run("CREATE TABLE IF NOT EXISTS projects (projectID INTEGER PRIMARY KEY AUTOI
 });
 
 
-//----------------------------------------UPDATE CRUD Project ----------------------------------------
-app.put('/users/:userID', (req, res) => {
-  if (req.user && req.user.role === 1) {
-    const id = req.params.userID; 
-    const username = req.body.username;
-    const password = req.body.password;
-    const role = req.body.role;
-    const email = req.body.email;
-    const regDate = req.body.regDate;
-
-    db.run('UPDATE user SET username = ?, password = ?, role = ?, email = ?, regDate = ? WHERE id = ?', [username, password, role, email, regDate, id], (err) => {
-      if (err) {
-        res.status(500).json({ error: 'Server error' });
-      } else {
-        res.status(200).json({ message: 'User updated' });
-      }
-    });
-  } else {
-    res.status(401).json({ error: 'Unauthorized' });
-  }
-}); 
-
 //Use of a GET CRUD operation on one of your tables, 
 //retrieve more information about an element by clicking on it
 //Select all the users that are NOT admin. 
@@ -358,6 +336,8 @@ process.on('exit', () => {
   db.close();
 });
 
+
+//----------------------------------------Education ----------------------------------------
 app.get('/edu', (req, res) => {
   console.log(`edu`)
   db.all("SELECT * FROM Education", function (error, theEducation) {
@@ -378,7 +358,7 @@ app.get('/edu', (req, res) => {
 });
 
 
-//Step4 CREATE add new projects  
+//----------------------------------------Project ----------------------------------------
 app.get('/projects', (req, res) => {
   console.log(`project`)
   db.all("SELECT projectTitle, projectYear, projectID FROM projects", function (error, theProjects) {
@@ -396,6 +376,27 @@ app.get('/projects', (req, res) => {
       } 
     });
 });
+//----------------------------------------UPDATE CRUD Project ----------------------------------------
+app.put('/users/:userID', (req, res) => {
+  if (req.user && req.user.role === 1) {
+    const id = req.params.userID; 
+    const username = req.body.username;
+    const password = req.body.password;
+    const role = req.body.role;
+    const email = req.body.email;
+    const regDate = req.body.regDate;
+
+    db.run('UPDATE user SET username = ?, password = ?, role = ?, email = ?, regDate = ? WHERE id = ?', [username, password, role, email, regDate, id], (err) => {
+      if (err) {
+        res.status(500).json({ error: 'Server error' });
+      } else {
+        res.status(200).json({ message: 'User updated' });
+      }
+    });
+  } else {
+    res.status(401).json({ error: 'Unauthorized' });
+  }
+}); 
 
 //----------------------------------------DELETE CRUD Project----------------------------------------
 //can only be preformed by an admin.
@@ -426,6 +427,8 @@ app.get('/projects/delete/:id', (req, res) => {
   }
 });
 
+
+//---------------------------------------- Read more about a specfic project (READ)  Project----------------------------------------
 app.get('/projects-more/:id', (req, res) => {
   const id= req.params.id
   db.get("SELECT * FROM projects WHERE projectID=?", [id], function (error, theProjects) {
@@ -590,57 +593,37 @@ app.get('/projects1111', (req, res) => {
 });
 
 
-//----------------------------------------Education----------------------------------------
-app.get('/education', (req, res) => {
-  db.get("SELECT * FROM education WHERE educationID=?", [id], function (error, TheEducation) {
-    console.log("edu")
-      if (error) {
-        console.log("SESSION: ", req.session)
-          const model = {
-              dbError: true,
-              theError: error,
-              Education: [],
-              isLoggedIn:req.session.isLoggedIn,
-              name:req.session.name,
-              isAdmin:req.session.isAdmin,
-          }
-          // renders the page with the model
-          res.render("education.handlebars", model)
-      }
-      else {
-          const model = {
-              dbError: false,
-              theError: "",
-              Education: TheEducation,
-              isLoggedIn: req.session.isLoggedIn,
-              name: req.session.name,
-              isAdmin: req.session.isAdmin,
-          }
-          // renders the page with the model
-          res.render("education.handlebars", model)
-      }
-    })
-});
-/*
-app.get('/education', (req, res) => {
-  console.log(`edu`)
-  db.all("SELECT * FROM education", function (error, theProjects) {
-    if (error) {
-       // fix err
-    } else {
-        console.log(theProjects);
-        const model = {
-          projects: theProjects,
-          isLoggedIn: req.session.isLoggedIn,
-          name: req.session.name,
-          isAdmin: req.session.isAdmin,
-        }
-        res.render("education.handlebars", model); 
-      } 
-    });
-});
+// app.get('/education', (req, res) => {
+//   db.get("SELECT * FROM education WHERE educationID=?", [id], function (error, TheEducation) {
+//     console.log("edu")
+//       if (error) {
+//         console.log("SESSION: ", req.session)
+//           const model = {
+//               dbError: true,
+//               theError: error,
+//               Education: [],
+//               isLoggedIn:req.session.isLoggedIn,
+//               name:req.session.name,
+//               isAdmin:req.session.isAdmin,
+//           }
+//           // renders the page with the model
+//           res.render("education.handlebars", model)
+//       }
+//       else {
+//           const model = {
+//               dbError: false,
+//               theError: "",
+//               Education: TheEducation,
+//               isLoggedIn: req.session.isLoggedIn,
+//               name: req.session.name,
+//               isAdmin: req.session.isAdmin,
+//           }
+//           // renders the page with the model
+//           res.render("education.handlebars", model)
+//       }
+//     })
+// });
 
-*/
 
 // run the server and make it listen to the port
 app.listen(port, () => {
